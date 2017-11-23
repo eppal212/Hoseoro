@@ -1,3 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Hoseoro</string>
+
+    <string name="app_name">호서로 테스트</string>
+
+    <string name="button1">평일</string>
+
+    <string name="margin">10dp</string>
+
+    <string name="tab_cCam">천안캠퍼스</string>
+    <string name="tab_terminal">천안터미널</string>
+    <string name="tab_station">천안역</string>
+    <string name="tab_hospital">충무병원</string>
+    <string name="tab_road">쌍용3동</string>
+    <string name="tab_ktx">천안아산역</string>
+    <string name="tab_aCam">아산캠퍼스</string>
+
+    <string name="drawer_open">drawer_open</string>
+    <string name="drawer_close">drawer_close</string>
+
 </resources>

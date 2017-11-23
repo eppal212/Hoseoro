@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <ScrollView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <TableLayout
+            android:id="@+id/table_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorMain"
+            android:stretchColumns="*">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+            <TextView
+                android:id="@+id/table_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|center_horizontal"
+                android:textColor="@color/White"
+                android:textStyle="bold"/>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/table_column1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:padding="3dp"
+                    android:textColor="@color/White"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/table_column2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:padding="3dp"
+                    android:text="KTX\n천안아산역"
+                    android:textColor="@color/White"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/table_column3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:padding="3dp"
+                    android:text="쌍용2동"
+                    android:textColor="@color/White"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/table_column4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:padding="3dp"
+                    android:text="충무병원"
+                    android:textColor="@color/White"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/table_column5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:padding="3dp"
+                    android:text="천안역"
+                    android:textColor="@color/White"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/table_column6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:padding="3dp"
+                    android:text="천안터미널"
+                    android:textColor="@color/White"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/table_column7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:padding="3dp"
+                    android:text="천캠도착"
+                    android:textColor="@color/White"
+                    android:textStyle="bold"/>
+
+            </TableRow>
+
+        </TableLayout>
+
+    </ScrollView>
+
+</LinearLayout>
+
+
+
+
+
+<!--
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    >
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorMain"
+        android:stretchColumns="*">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="1dp"
+            android:background="@color/White"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="1st row" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="1dp"
+            android:background="@color/White"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="2st row" />
+
+        </TableRow>
+
+    </TableLayout>
+
+    -->

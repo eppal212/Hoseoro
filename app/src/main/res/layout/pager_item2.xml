@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/White"
+    android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/fragment_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="5dp">
+
+                <ImageButton
+                    android:id="@+id/item_where"
+                    android:layout_margin="10dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/item_where"/>
+
+                <ImageButton
+                    android:id="@+id/item_timetable"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@id/item_where"
+                    android:layout_alignParentTop="true"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/item_timetable"
+                    android:onClick="onClickTimetable"/>
+
+                <TextView
+                    android:id="@+id/item_destination"
+                    android:layout_margin="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/White"
+                    android:textSize="40dp"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/item_time"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/White"
+                    android:textSize="60sp"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/item_timetext"
+                    android:layout_toRightOf="@id/item_time"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignBaseline="@id/item_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="분 남음"
+                    android:textColor="@color/White"
+                    android:textSize="40sp"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fragment_layout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp">
+
+                <ImageButton
+                    android:id="@+id/item_where2"
+                    android:layout_margin="10dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/item_where"/>
+
+                <ImageButton
+                    android:id="@+id/item_timetable2"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@id/item_where2"
+                    android:layout_alignParentTop="true"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/item_timetable"
+                    android:onClick="onClickTimetable"/>
+
+                <TextView
+                    android:id="@+id/item_destination2"
+                    android:layout_margin="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/White"
+                    android:textSize="40dp"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/item_time2"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/White"
+                    android:textSize="60sp"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/item_timetext2"
+                    android:layout_toRightOf="@id/item_time2"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignBaseline="@id/item_time2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="분 남음"
+                    android:textColor="@color/White"
+                    android:textSize="40sp"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        </RelativeLayout>
+
+</LinearLayout>
