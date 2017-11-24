@@ -46,11 +46,6 @@
         </activity>
 
         <activity
-            android:name=".CarpoolActivity"
-            android:screenOrientation="portrait">
-        </activity>
-
-        <activity
             android:name=".MapActivity"
             android:screenOrientation="portrait">
         </activity>

@@ -85,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         dataList.add(new DrawerItem("학기중 셔틀버스", R.drawable.ic_menu));
         dataList.add(new DrawerItem("방학중 셔틀버스", R.drawable.ic_menu));
         dataList.add(new DrawerItem("온양순환(학기중)", R.drawable.ic_menu));
-        dataList.add(new DrawerItem("카풀", R.drawable.ic_menu));
 
         // 리스트뷰에 어댑터 연결
         adapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item, dataList);
@@ -144,10 +143,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 2:
                 startActivity(new Intent(MainActivity.this,OnYangActivity.class));
-                //finish();
-                break;
-            case 3:
-                startActivity(new Intent(MainActivity.this,CarpoolActivity.class));
                 //finish();
                 break;
             default:
