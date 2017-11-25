@@ -63,10 +63,11 @@
         </android.support.v7.widget.Toolbar>
 
 
+        <!-- 평일/토요일/일요일을 선택하는 툴바 -->
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar2"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:contentInsetStart="0dp"
             app:contentInsetStart="0dp"
             android:background="@color/White" >
@@ -89,8 +90,8 @@
                         android:id="@+id/button1"
                         android:layout_width="65dp"
                         android:layout_height="28dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="0dp"
                         android:button="@null"
                         android:text="평일"
                         android:textSize="16sp"
@@ -101,31 +102,17 @@
 
                     <RadioButton
                         android:id="@+id/button2"
-                        android:layout_width="104dp"
+                        android:layout_width="125dp"
                         android:layout_height="28dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="100dp"
+                        android:layout_marginRight="0dp"
                         android:button="@null"
-                        android:text="토·공휴일"
+                        android:text="토·일·공휴일"
                         android:textSize="16sp"
                         android:textAlignment="center"
                         android:textStyle="bold"
                         android:textColor="@color/selector_toolbar2_2"
                         android:background="@drawable/radio_button2"/>
-
-                    <RadioButton
-                        android:id="@+id/button3"
-                        android:layout_width="65dp"
-                        android:layout_height="28dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:button="@null"
-                        android:text="일요일"
-                        android:textSize="16sp"
-                        android:textAlignment="center"
-                        android:textStyle="bold"
-                        android:textColor="@color/selector_toolbar2_3"
-                        android:background="@drawable/radio_button3"/>
 
                 </RadioGroup>
 
@@ -133,8 +120,9 @@
 
         </android.support.v7.widget.Toolbar>
 
+        <!-- 뷰페이저가 들어가는 프래그먼트 -->
         <FrameLayout
-            android:id="@+id/sample_content_fragment"
+            android:id="@+id/content_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

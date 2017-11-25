@@ -15,10 +15,8 @@ public class TimetableActivity extends AppCompatActivity {
 
     TermCcamToAcamDB termCcamToAcamDB;
     TermAcamToCcamDB termAcamToCcamDB;
-    SaturdayCcamToAcamDB saturdayCcamToAcamDB;
-    SaturdayAcamToCcamDB saturdayAcamToCcamDB;
-    SundayCcamToAcamDB sundayCcamToAcamDB;
-    SundayAcamToCcamDB sundayAcamToCcamDB;
+    HolidayCcamToAcamDB holidayCcamToAcamDB;
+    HolidayAcamToCcamDB holidayAcamToCcamDB;
     SQLiteDatabase dbCcamToAcam, dbAcamToCcam;
 
     int index = 0;
@@ -52,37 +50,22 @@ public class TimetableActivity extends AppCompatActivity {
                     dbCcamToAcam = termCcamToAcamDB.getReadableDatabase();
                     dbAcamToCcam = termAcamToCcamDB.getReadableDatabase();
                 }
-                rowCount = 73; // 맨 아래 데이터 출력 부분에서 쓸 변수 초기화 - 요일에 따라 행의 갯수가 달라짐
+                rowCount = 84; // 맨 아래 데이터 출력 부분에서 쓸 변수 초기화 - 요일에 따라 행의 갯수가 달라짐
                 break;
 
             case 2:
-                saturdayCcamToAcamDB = new SaturdayCcamToAcamDB(this);
-                saturdayAcamToCcamDB = new SaturdayAcamToCcamDB(this);
+                holidayCcamToAcamDB = new HolidayCcamToAcamDB(this);
+                holidayAcamToCcamDB = new HolidayAcamToCcamDB(this);
                 try {
-                    dbCcamToAcam = saturdayCcamToAcamDB.getWritableDatabase();
-                    dbAcamToCcam = saturdayAcamToCcamDB.getWritableDatabase();
-                    dbNameCcamToAcam = "SaturdayCcamToAcam";
-                    dbNameAcamToCcam = "SaturdayAcamToCcam";
+                    dbCcamToAcam = holidayCcamToAcamDB.getWritableDatabase();
+                    dbAcamToCcam = holidayAcamToCcamDB.getWritableDatabase();
+                    dbNameCcamToAcam = "HolidayCcamToAcam";
+                    dbNameAcamToCcam = "HolidayAcamToCcam";
                 } catch (SQLException ex) {
-                    dbCcamToAcam = saturdayCcamToAcamDB.getReadableDatabase();
-                    dbAcamToCcam = saturdayAcamToCcamDB.getReadableDatabase();
+                    dbCcamToAcam = holidayCcamToAcamDB.getReadableDatabase();
+                    dbAcamToCcam = holidayAcamToCcamDB.getReadableDatabase();
                 }
-                rowCount = 16;
-                break;
-
-            case 3:
-                sundayCcamToAcamDB = new SundayCcamToAcamDB(this);
-                sundayAcamToCcamDB = new SundayAcamToCcamDB(this);
-                try {
-                    dbCcamToAcam = sundayCcamToAcamDB.getWritableDatabase();
-                    dbAcamToCcam = sundayAcamToCcamDB.getWritableDatabase();
-                    dbNameCcamToAcam = "SundayCcamToAcam";
-                    dbNameAcamToCcam = "SundayAcamToCcam";
-                } catch (SQLException ex) {
-                    dbCcamToAcam = sundayCcamToAcamDB.getReadableDatabase();
-                    dbAcamToCcam = sundayAcamToCcamDB.getReadableDatabase();
-                }
-                rowCount = 22;
+                rowCount = 24;
                 break;
         }
         dbArray = new String[rowCount][7];  // 배열 초기화
@@ -99,13 +82,13 @@ public class TimetableActivity extends AppCompatActivity {
 
         if (stationName.equals("천안캠퍼스") || stationName.equals("천안터미널 아캠행")
                 || stationName.equals("천안역 아캠행") || stationName.equals("충무병원 아캠행")
-                || stationName.equals("쌍용3동 아캠행") || stationName.equals("천안아산역 아캠행")) {
+                || stationName.equals("쌍용동 아캠행") || stationName.equals("천안아산역 아캠행")) {
             table_Row.setText("천안캠퍼스 출발 > 아산캠퍼스 도착");
             tableColumn1.setText("천캠\n출발");
             tableColumn2.setText("천안\n터미널");
             tableColumn3.setText("천안역");
             tableColumn4.setText("충무\n병원");
-            tableColumn5.setText("쌍용\n2동");
+            tableColumn5.setText("쌍용동");
             tableColumn6.setText("KTX\n천안\n아산역");
             tableColumn7.setText("아캠\n도착");
 
@@ -127,11 +110,11 @@ public class TimetableActivity extends AppCompatActivity {
         }
         else if (stationName.equals("아산캠퍼스") || stationName.equals("천안터미널 천캠행")
                 || stationName.equals("천안역 천캠행") || stationName.equals("충무병원 천캠행")
-                || stationName.equals("쌍용3동 천캠행") || stationName.equals("천안아산역 천캠행")) {
+                || stationName.equals("쌍용동 천캠행") || stationName.equals("천안아산역 천캠행")) {
             table_Row.setText("아산캠퍼스 출발 > 천안캠퍼스 도착");
             tableColumn1.setText("아캠\n출발");
             tableColumn2.setText("KTX\n천안\n아산역");
-            tableColumn3.setText("쌍용\n2동");
+            tableColumn3.setText("쌍용동");
             tableColumn4.setText("충무\n병원");
             tableColumn5.setText("천안역");
             tableColumn6.setText("천안\n터미널");

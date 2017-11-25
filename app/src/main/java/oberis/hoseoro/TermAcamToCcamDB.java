@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class TermAcamToCcamDB extends SQLiteOpenHelper {
     final static private String DB_NAME = "TermAcamToCcam.db";
-    final static private int DB_VERSION = 2;
+    final static private int DB_VERSION = 3;
 
     public TermAcamToCcamDB(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -22,7 +22,7 @@ public class TermAcamToCcamDB extends SQLiteOpenHelper {
                 "station TEXT," +
                 "terminal TEXT, " +
                 "cCam TEXT);");
-        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '7:30', '7:45', '7:50', '7:55', '8:05', '8:15', '8:25');");
+        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '7:45', '8:00', '8:05', '8:10', '8:20', '8:30', '8:40');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '8:00', '8:15', '8:20', '8:25', '8:35', '8:45', '8:55');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '8:10', '8:25', '8:30', '8:35', '8:45', '8:55', '9:05');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '8:20', '8:35', '8:40', '8:45', '8:55', '9:05', '9:15');");
@@ -34,7 +34,6 @@ public class TermAcamToCcamDB extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '9:10', '9:25', '9:30', '9:35', '9:45', '9:55', '10:05');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '9:20', '9:35', '9:40', '9:45', '9:55', '10:05', '10:15');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '9:30', '9:45', '9:50', '9:55', '10:05', '10:15', '10:25');");
-        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '9:35', '9:50', '9:55', '10:00', '10:10', '10:20', '10:30');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '9:40', '9:55', '10:00', '10:05', '10:15', '10:25', '10:35');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '9:50', '10:05', '10:10', '10:15', '10:25', '10:35', '10:45');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '10:00', '10:15', '10:20', '10:25', '10:35', '10:45', '10:55');");
@@ -55,11 +54,9 @@ public class TermAcamToCcamDB extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '13:30', '13:45', '13:50', '13:55', '14:05', '14:15', '14:25');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '13:45', '14:00', '14:05', '14:10', '14:20', '14:30', '14:40');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '14:00', '14:15', '14:20', '14:25', '14:35', '14:45', '14:55');");
-        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '14:10', '14:25', '14:30', '14:35', '14:45', '14:55', '15:05');");
-        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '14:20', '14:35', '14:40', '14:45', '14:55', '15:05', '15:15');");
+        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '14:15', '14:30', '14:35', '14:40', '14:50', '15:00', '15:10');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '14:30', '14:45', '14:50', '14:55', '15:05', '15:15', '15:25');");
-        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '14:40', '14:55', '15:00', '15:05', '15:15', '15:25', '15:35');");
-        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '14:50', '15:05', '15:10', '15:15', '15:25', '15:35', '15:45');");
+        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '14:45', '14:50', '15:05', '15:10', '15:20', '15:30', '15:40');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '15:00', '15:15', '15:20', '15:25', '15:35', '15:45', '15:55');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '15:10', '15:25', '15:30', '15:35', '15:45', '15:55', '16:05');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '15:20', '15:35', '15:40', '15:45', '15:55', '16:05', '16:15');");
@@ -67,19 +64,22 @@ public class TermAcamToCcamDB extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '15:40', '15:55', '16:00', '16:05', '16:15', '16:25', '16:35');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '15:50', '16:05', '16:10', '16:15', '16:25', '16:35', '16:45');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '16:00', '16:15', '16:20', '16:25', '16:35', '16:45', '16:55');");
-        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '16:10', '16:25', '16:30', '16:35', '16:45', '16:55', '17:05');");
-        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '16:20', '16:35', '16:40', '16:45', '16:55', '17:05', '17:15');");
+        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '16:15', '16:30', '16:35', '16:40', '16:50', '17:00', '17:10');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '16:30', '16:45', '16:50', '16:55', '17:05', '17:15', '17:25');");
+        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '16:35', '16:50', '16:55', '17:00', '17:10', '17:20', '17:30');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '16:40', '16:55', '17:00', '17:05', '17:15', '17:25', '17:35');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '16:50', '17:05', '17:10', '17:15', '17:25', '17:35', '17:45');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '17:00', '17:15', '17:20', '17:25', '17:35', '17:45', '17:55');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '17:10', '17:25', '17:30', '17:35', '17:45', '17:55', '18:05');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '17:20', '17:35', '17:40', '17:45', '17:55', '18:05', '18:15');");
+        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '17:25', '17:40', '17:45', '17:50', '18:00', '18:10', '18:20');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '17:30', '17:45', '17:50', '17:55', '18:05', '18:15', '18:25');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '17:35', '17:50', '17:55', '18:00', '18:10', '18:20', '18:30');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '17:40', '17:55', '18:00', '18:05', '18:15', '18:25', '18:35');");
+        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '17:45', '18:00', '18:05', '18:10', '18:20', '18:35', '18:45');"); // 특이사항
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '17:50', '18:05', '18:10', '18:15', '18:25', '18:35', '18:45');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '18:00', '18:15', '18:20', '18:25', '18:35', '18:45', '18:55');");
+        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '18:05', '18:20', '18:25', '18:30', '18:40', '18:55', '19:05');"); // 특이사항
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '18:10', '18:25', '18:30', '18:35', '18:45', '18:55', '19:05');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '18:20', '18:35', '18:40', '18:45', '18:55', '19:05', '19:15');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '18:30', '18:45', '18:50', '18:55', '19:05', '19:15', '19:25');");
@@ -91,9 +91,11 @@ public class TermAcamToCcamDB extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '19:45', '20:00', '20:05', '20:10', '20:20', '20:30', '20:40');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '20:00', '20:15', '20:20', '20:25', '20:35', '20:45', '20:55');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '20:20', '20:35', '20:40', '20:45', '20:55', '21:05', '21:15');");
+        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '20:30', '20:45', '20:50', '20:55', '21:05', '21:15', '21:25');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '20:40', '20:55', '21:00', '21:05', '21:15', '21:25', '21:35');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '21:00', '21:15', '21:20', '21:25', '21:35', '21:45', '21:55');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '21:20', '21:35', '21:40', '21:45', '21:55', '22:05', '22:15');");
+        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '21:30', '21:45', '21:50', '21:55', '22:05', '22:15', '22:25');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '21:40', '21:55', '22:00', '22:05', '22:15', '22:25', '22:35');");
     }
 

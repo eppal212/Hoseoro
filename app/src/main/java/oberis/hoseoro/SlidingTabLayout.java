@@ -17,7 +17,6 @@
 package oberis.hoseoro;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.view.PagerAdapter;
@@ -30,40 +29,13 @@ import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
-/**
- * To be used with ViewPager to provide a tab indicator component which give constant feedback as to
- * the user's scroll progress.
- * <p>
- * To use the component, simply add it to your view hierarchy. Then in your
- * {@link android.app.Activity} or {@link android.support.v4.app.Fragment} call
- * {@link #setViewPager(ViewPager)} providing it the ViewPager this layout is being used for.
- * <p>
- * The colors can be customized in two ways. The first and simplest is to provide an array of colors
- * via {@link #setSelectedIndicatorColors(int...)} and {@link #setDividerColors(int...)}. The
- * alternative is via the {@link TabColorizer} interface which provides you complete control over
- * which color is used for any individual position.
- * <p>
- * The views used as tabs can be customized by calling {@link #setCustomTabView(int, int)},
- * providing the layout ID of your custom layout.
- */
+// 슬라이딩되는 탭을 만들기 위한 커스텀뷰
 public class SlidingTabLayout extends HorizontalScrollView {
 
-    /**
-     * Allows complete control over the colors drawn in the tab layout. Set with
-     * {@link #setCustomTabColorizer(TabColorizer)}.
-     */
+    // 탭 레이아웃에 그려진 색상을 조정
     public interface TabColorizer {
-
-        /**
-         * @return return the color of the indicator used when {@code position} is selected.
-         */
         int getIndicatorColor(int position);
-
-        /**
-         * @return return the color of the divider drawn to the right of {@code position}.
-         */
-        int getDividerColor(int position);
-
+        /*int getDividerColor(int position);*/
     }
 
     private static final int TITLE_OFFSET_DIPS = 24;
@@ -80,6 +52,8 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
     private final SlidingTabStrip mTabStrip;
 
+
+    // 생성자 3개
     public SlidingTabLayout(Context context) {
         this(context, null);
     }
@@ -91,72 +65,43 @@ public class SlidingTabLayout extends HorizontalScrollView {
     public SlidingTabLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        // Disable the Scroll Bar
-        setHorizontalScrollBarEnabled(false);
-        // Make sure that the Tab Strips fills this View
-        setFillViewport(true);
+        setHorizontalScrollBarEnabled(false);   // 스크롤바 보이지 않기
+        setFillViewport(true);  // 스크롤뷰 안에 들어가는 뷰(탭들)들의 크기가 스크롤뷰에 맞도록
 
-        mTitleOffset = (int) (TITLE_OFFSET_DIPS * getResources().getDisplayMetrics().density);
+        mTitleOffset = (int) (TITLE_OFFSET_DIPS * getResources().getDisplayMetrics().density);  // 탭 클릭시 눌리는 효과 조정
 
         mTabStrip = new SlidingTabStrip(context);
         addView(mTabStrip, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
     }
 
-    /**
-     * Set the custom {@link TabColorizer} to be used.
-     *
-     * If you only require simple custmisation then you can use
-     * {@link #setSelectedIndicatorColors(int...)} and {@link #setDividerColors(int...)} to achieve
-     * similar effects.
-     */
-    public void setCustomTabColorizer(TabColorizer tabColorizer) {
-        mTabStrip.setCustomTabColorizer(tabColorizer);
-    }
-
-    /**
-     * Sets the colors to be used for indicating the selected tab. These colors are treated as a
-     * circular array. Providing one color will mean that all tabs are indicated with the same color.
-     */
+    // 탭이 눌렸을 때 밑줄 색깔 일괄 설정
     public void setSelectedIndicatorColors(int... colors) {
         mTabStrip.setSelectedIndicatorColors(colors);
     }
 
-    /**
-     * Sets the colors to be used for tab dividers. These colors are treated as a circular array.
-     * Providing one color will mean that all tabs are indicated with the same color.
-     */
+    /*// 탭과 탭 사이의 구분선 일괄 설정
     public void setDividerColors(int... colors) {
         mTabStrip.setDividerColors(colors);
-    }
+    }*/
 
-    /**
-     * Set the {@link ViewPager.OnPageChangeListener}. When using {@link SlidingTabLayout} you are
-     * required to set any {@link ViewPager.OnPageChangeListener} through this method. This is so
-     * that the layout can update it's scroll position correctly.
-     *
-     * @see ViewPager#setOnPageChangeListener(ViewPager.OnPageChangeListener)
-     */
+    // 뷰페이저가 전환될 때 발동되는 리스너
     public void setOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
         mViewPagerPageChangeListener = listener;
     }
 
     /**
-     * Set the custom layout to be inflated for the tab views.
-     *
-     * @param layoutResId Layout id to be inflated
-     * @param textViewId id of the {@link TextView} in the inflated view
+     * 탭뷰가 인플레이트 되었을 때
+     * @param layoutResId 인플레이트된 레이아웃 ID
+     * @param textViewId 인플레이트된 텍스트뷰 ID
      */
     public void setCustomTabView(int layoutResId, int textViewId) {
         mTabViewLayoutId = layoutResId;
         mTabViewTextViewId = textViewId;
     }
 
-    /**
-     * Sets the associated view pager. Note that the assumption here is that the pager content
-     * (number of tabs and tab titles) does not change after this call has been made.
-     */
+    // 뷰페이저를 설정
     public void setViewPager(ViewPager viewPager) {
-        mTabStrip.removeAllViews();
+        // mTabStrip.removeAllViews();
 
         mViewPager = viewPager;
         if (viewPager != null) {
@@ -165,10 +110,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
         }
     }
 
-    /**
-     * Create a default view to be used for tabs. This is called if a custom tab view is not set via
-     * {@link #setCustomTabView(int, int)}.
-     */
+    // 탭에 대한 정보가 지정되지 않았을 때 호출되는 기본 탭뷰
     protected TextView createDefaultTabView(Context context) {
         TextView textView = new TextView(context);
         textView.setGravity(Gravity.CENTER);
@@ -222,20 +164,17 @@ public class SlidingTabLayout extends HorizontalScrollView {
             tabView.setOnClickListener(tabClickListener);
 
             mTabStrip.addView(tabView);
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////슬라이딩 탭 글자 수정(코드 추가)
 
+            // 슬라이딩 탭 글자 수정(코드 추가)
             if (i == mViewPager.getCurrentItem()) {
                 tabView.setSelected(true);
             }
 
             //tabTitleView.setTextColor(getResources().getColor(R.color.colorMain));           // 글자색 (단일 색으로)
             tabTitleView.setTextColor(getResources().getColorStateList(R.color.selector));  // 글자색 (선택됐을 때 변경)
-            //Typeface type = Typeface.createFromAsset(getAssets(),"fonts/H_Monofur.ttf");      // 폰트 설정
-            //tabTitleView.setTypeface(type);
             //tabTitleView.setTextSize(16.0f);    // 글자 크기 - 최상단 상수로 조정
             tabTitleView.setTypeface(null, Typeface.BOLD);      // 굵게
-
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //글자수정 부분 끝
         }
     }
 
@@ -283,7 +222,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
             int extraOffset = (selectedTitle != null)
                     ? (int) (positionOffset * selectedTitle.getWidth())
                     : 0;
-            scrollToTab(position, extraOffset); /////////////////////////////////////////////////////////// 탭이 눌렀을 때 움직이는 것
+            scrollToTab(position, extraOffset); // 탭이 눌렀을 때 움직이는 기능
 
             if (mViewPagerPageChangeListener != null) {
                 mViewPagerPageChangeListener.onPageScrolled(position, positionOffset,
@@ -299,20 +238,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 mViewPagerPageChangeListener.onPageScrollStateChanged(state);
             }
         }
-/*
-        // 선택됐을 때 색이 변하기 위해 다음 메소드로 변경
-        @Override
-        public void onPageSelected(int position) {
-            if (mScrollState == ViewPager.SCROLL_STATE_IDLE) {
-                mTabStrip.onViewPagerPageChanged(position, 0f);
-                scrollToTab(position, 0);
-            }
-
-            if (mViewPagerPageChangeListener != null) {
-                mViewPagerPageChangeListener.onPageSelected(position);
-            }
-        }
-*/
 
         @Override
         public void onPageSelected(int position) {
@@ -320,9 +245,11 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 mTabStrip.onViewPagerPageChanged(position, 0f);
                 scrollToTab(position, 0);
             }
+            // 선택됐을 때 색이 변하기 위해 for문 추가
             for (int i = 0; i < mTabStrip.getChildCount(); i++) {
                 mTabStrip.getChildAt(i).setSelected(position == i);
             }
+
             if (mViewPagerPageChangeListener != null) {
                 mViewPagerPageChangeListener.onPageSelected(position);
             }

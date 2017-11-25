@@ -22,12 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    // 학기중이냐 방학중이냐를 결정하는 모드. true가 학기중
-    boolean shuttleMode = true;
-    // 무슨 요일을 선택했느냐 하는 변수
-    int whatDay = 1;
-    // 평일 or 토요일 or 일요일 선택하는 라디오 그룹, onCreate에서 사용
-    RadioGroup radioGroup;
+
+    boolean shuttleMode = true; // 학기중이냐 방학중이냐를 결정하는 모드. true가 학기중
+    int whatDay = 1;    // 무슨 요일을 선택했느냐 하는 변수
+    RadioGroup radioGroup;  // 평일 or 토요일 or 일요일 선택하는 라디오 그룹, onCreate에서 사용
 
     // 네이게이션 드로어 변수들
     private DrawerLayout mDrawerLayout;
@@ -48,50 +46,57 @@ public class MainActivity extends AppCompatActivity {
 
         backKeyPressedTime = System.currentTimeMillis();    // 백버튼 클릭 초기화
 
+        // 맨 위에 첫번째 툴바부분 초기화
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
 
-        // 프래그먼트
+        // 앱이 처음 시작됐을 때 뷰페이저 부분을 그려주기 위함
         if (savedInstanceState == null) {
-            makeFragment(shuttleMode, whatDay);
+            makeFragment(shuttleMode, whatDay); // makeFragment 메소드가 뷰페이저를 그려주는 역할
         }
 
+
+        /**
+         * 평일/토요일/일요일 라디오버튼 클릭 이벤트 처리
+         * 라디오 버튼이 눌렸을 때 뷰페이저를 다시 그려줘야 한다.
+         */
         radioGroup = (RadioGroup)findViewById(R.id.radioGroup); // 라디오그룹 리스너
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if(checkedId == R.id.button1){
-                    //Toast.makeText(MainActivity.this, "평일 선택", Toast.LENGTH_SHORT).show();
                     whatDay = 1;
                     makeFragment(shuttleMode, whatDay);
                 } else if (checkedId == R.id.button2) {
-                    //Toast.makeText(MainActivity.this, "토요일 선택", Toast.LENGTH_SHORT).show();
                     whatDay = 2;
-                    makeFragment(shuttleMode, whatDay);
-                } else if (checkedId == R.id.button3) {
-                    //Toast.makeText(MainActivity.this, "일요일 선택", Toast.LENGTH_SHORT).show();
-                    whatDay = 3;
                     makeFragment(shuttleMode, whatDay);
                 }
             }
         });
+        /**
+         *  라디오 버튼 이벤트처리 끝
+         */
 
-        // 네비게이션 드로어 초기화
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+        /**
+         * 네비게이션 드로어 부분
+         */
+        // 초기화 & 목록 설정
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);    // 왼쪽에서 나오는 드로어
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);    // 리스트뷰가 드로어로 나오도록
         dataList = new ArrayList<DrawerItem>();
-        dataList.add(new DrawerItem("학기중 셔틀버스", R.drawable.ic_menu));
-        dataList.add(new DrawerItem("방학중 셔틀버스", R.drawable.ic_menu));
-        dataList.add(new DrawerItem("온양순환(학기중)", R.drawable.ic_menu));
+        dataList.add(new DrawerItem(" 학기중 셔틀버스", R.drawable.ic_term));
+        dataList.add(new DrawerItem(" 방학중 셔틀버스", R.drawable.ic_vacation));
+        dataList.add(new DrawerItem(" 온양순환(학기중)", R.drawable.ic_onyang));
 
         // 리스트뷰에 어댑터 연결
         adapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item, dataList);
         mDrawerList.setAdapter(adapter);
         mDrawerList.setItemChecked(0, true); // 초기값 설정
-        // Set the list's click listener
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());   // 리스트 클릭 리스너 설정
+
         // 네비게이션 드로어 열기/닫기 감지
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 toolbar, R.string.drawer_open, R.string.drawer_close) {
@@ -106,9 +111,18 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle.setDrawerIndicatorEnabled(false); // 네비게이션 드로어 기본아이콘 안 보이기
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        // 여기까지
+        /**
+         * 네비게이션 드로어 부분 끝
+         */
     }
+    /**
+     * onCreate() 메소드 부분 끝
+     */
 
+
+    /**
+     * 백버튼 터치로 인한 앱 종료 부분
+     */
     @Override
     public void onBackPressed() {
         //1번째 백버튼 클릭
@@ -123,8 +137,15 @@ public class MainActivity extends AppCompatActivity {
             android.os.Process.killProcess(android.os.Process.myPid());
         }
     }
+    /**
+     * 앱종료 파트 끝
+     */
 
-    // 네비게이션 드로어
+
+    /**
+     * 네비게이션 드로어 자세한 부분
+     */
+    // 네비게이션 드로어 온클릭 리스너 구현 부분.. 위쪽 onCreate() 에서는 리스너를 달아주기만 함
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
@@ -151,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerList.setItemChecked(possition, true);
         mDrawerLayout.closeDrawer(mDrawerList);
-
     }
 
     // 눌러서 열고 닫기
@@ -185,6 +205,11 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.openDrawer(Gravity.START);
     }
 
+    /**
+     * 네비게시션 드로어 부분 끝
+     */
+
+
     // 정류장 지도보기 버튼 누름
     public void onClickMap(View v) {
         Intent intent = new Intent(MainActivity.this,MapActivity.class);
@@ -214,15 +239,21 @@ public class MainActivity extends AppCompatActivity {
         makeFragment(shuttleMode, whatDay);
     }
 
-    // 프래그먼트 생성하고, 파라미터 주고, 연결까지 해주는 메소드
+
+    /**
+     * 뷰페이저 부분을 생성해주는 메소드
+     * 프래그먼트 생성하고, 파라미터 주고, 연결까지 해주는 메소드
+     * @param shuttleMode   // 학기중/방학중 판단
+     * @param whatDay  // 평일/토요일/일요일 판단
+     */
     public void makeFragment(boolean shuttleMode, int whatDay) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        SlidingTabsColorsFragment fragment = new SlidingTabsColorsFragment();
+        SlidingTabsFragment fragment = new SlidingTabsFragment();
         Bundle bundle = new Bundle(2); // 파라미터는 전달할 데이터 개수
         bundle.putBoolean("shuttleMode", shuttleMode);
         bundle.putInt("whatDay", whatDay); // key , value
         fragment.setArguments(bundle);
-        transaction.replace(R.id.sample_content_fragment, fragment);
+        transaction.replace(R.id.content_fragment, fragment);
         transaction.commit();
     }
 }
