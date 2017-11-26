@@ -110,169 +110,154 @@ public class ContentFragment extends Fragment {
         if (args != null) {
             // 학기중 셔틀
             if(args.getCharSequence(KEY_TITLE).equals("천안캠퍼스")) {
-                layout.setBackgroundResource(R.drawable.bg_ccam);
+                layout.setBackgroundResource(R.drawable.bg_ccam);   // 배경이미지 설정
 
-                TextView destination = (TextView) view.findViewById(R.id.item_destination);
-                destination.setText("아산캠퍼스행");
-                TextView time = (TextView) view.findViewById(R.id.item_time);
-                calcTime(dbCcamToAcam, dbNameCcamToAcam, "cCam", time);
+                setStationFragment(view, "cCam", 0);    // 프래그먼트의 뷰들 처리
 
-                // 전체 시간표 보기 버튼 리스너 처리
-                view.findViewById(R.id.item_timetable).setOnClickListener(
-                    new Button.OnClickListener() {
-                        public void onClick(View v) {
-                            Intent intent = new Intent(getActivity(),TimetableActivity.class);
-                            intent.putExtra("stationName", "천안캠퍼스");
-                            intent.putExtra("whatDay", whatDay);
-                            startActivity(intent);
-                        }
-                    }
-                );
-                view.findViewById(R.id.item_where).setOnClickListener(
-                        new Button.OnClickListener() {
-                            public void onClick(View v) {
-                                Intent intent = new Intent(getActivity(),MapActivity.class);
-                                intent.putExtra("stationName", "천안캠퍼스");
-                                intent.putExtra("destination", "아캠행");
-                                startActivity(intent);
-                            }
-                        }
-                );
+                view.findViewById(R.id.item_timetable).setOnClickListener(onClickListener_TimetableToAcam); // 시간표 버튼 이벤트 처리
 
             } else if(args.getCharSequence(KEY_TITLE).equals("아산캠퍼스")) {
                 layout.setBackgroundResource(R.drawable.bg_acam);
 
-                TextView destination = (TextView) view.findViewById(R.id.item_destination);
-                destination.setText("천안캠퍼스행");
-                TextView time = (TextView) view.findViewById(R.id.item_time);
-                calcTime(dbAcamToCcam, dbNameAcamToCcam, "aCam", time);
+                setStationFragment(view, "aCam", 1);
 
-                // 전체 시간표 보기 버튼 리스너 처리
-                view.findViewById(R.id.item_timetable).setOnClickListener(
-                        new Button.OnClickListener() {
-                            public void onClick(View v) {
-                                Intent intent = new Intent(getActivity(),TimetableActivity.class);
-                                intent.putExtra("stationName", "아산캠퍼스");
-                                intent.putExtra("whatDay", whatDay);
-                                startActivity(intent);
-                            }
-                        }
-                );
+                view.findViewById(R.id.item_timetable).setOnClickListener(onClickListener_TimetableToCcam);
+
+            } else if(args.getCharSequence(KEY_TITLE).equals("천안터미널")) {
+                layout.setBackgroundResource(R.drawable.bg_terminal1);
+                layout2.setBackgroundResource(R.drawable.bg_terminal2);
+
+                setStationFragment(view, "terminal", 1);
+                setStationFragment(view, "terminal", 2);
+
+                view.findViewById(R.id.item_timetable).setOnClickListener(onClickListener_TimetableToCcam);
+                view.findViewById(R.id.item_timetable2).setOnClickListener(onClickListener_TimetableToAcam);
+
+            } else if(args.getCharSequence(KEY_TITLE).equals("천안역")) {
+                layout.setBackgroundResource(R.drawable.bg_terminal1);
+                layout2.setBackgroundResource(R.drawable.bg_terminal2);
+
+                setStationFragment(view, "station",1);
+                setStationFragment(view, "station",2);
+
+                view.findViewById(R.id.item_timetable).setOnClickListener(onClickListener_TimetableToCcam);
+                view.findViewById(R.id.item_timetable2).setOnClickListener(onClickListener_TimetableToAcam);
+
+            } else if(args.getCharSequence(KEY_TITLE).equals("충무병원")) {
+                layout.setBackgroundResource(R.drawable.bg_terminal1);
+                layout2.setBackgroundResource(R.drawable.bg_terminal2);
+
+                setStationFragment(view, "hospital",1);
+                setStationFragment(view, "hospital",2);
+
+                view.findViewById(R.id.item_timetable).setOnClickListener(onClickListener_TimetableToCcam);
+                view.findViewById(R.id.item_timetable2).setOnClickListener(onClickListener_TimetableToAcam);
+
+            } else if(args.getCharSequence(KEY_TITLE).equals("쌍용동")) {
+                layout.setBackgroundResource(R.drawable.bg_terminal1);
+                layout2.setBackgroundResource(R.drawable.bg_terminal2);
+
+                setStationFragment(view, "road",1);
+                setStationFragment(view, "road",2);
+
+                view.findViewById(R.id.item_timetable).setOnClickListener(onClickListener_TimetableToCcam);
+                view.findViewById(R.id.item_timetable2).setOnClickListener(onClickListener_TimetableToAcam);
+
+            } else if(args.getCharSequence(KEY_TITLE).equals("천안아산역")) {
+                layout.setBackgroundResource(R.drawable.bg_terminal1);
+                layout2.setBackgroundResource(R.drawable.bg_terminal2);
+
+                setStationFragment(view, "ktx",1);
+                setStationFragment(view, "ktx",2);
+
+                view.findViewById(R.id.item_timetable).setOnClickListener(onClickListener_TimetableToCcam);
+                view.findViewById(R.id.item_timetable2).setOnClickListener(onClickListener_TimetableToAcam);
+
+            }
+        }
+    }
+
+    /**
+     * 뷰페이저에 프래그먼트를 그려주는 메소드 (시간표 아이콘 이벤트 처리는 별도)
+     * @param view  onCreateView() 에서 사용되는 view 객체
+     * @param Station    정류장 이름
+     * @param fragmentNumber    뷰페이저의 위/아래 프래그먼트 어느쪽이냐 선택
+     */
+    public void setStationFragment(View view, final String Station, int fragmentNumber) {
+
+        TextView destination = (TextView) view.findViewById(R.id.item_destination);
+        TextView destination2 = (TextView) view.findViewById(R.id.item_destination2);
+        TextView time = (TextView) view.findViewById(R.id.item_time);
+        TextView time2 = (TextView) view.findViewById(R.id.item_time2);
+
+        switch (fragmentNumber) {
+            case 0: // 특별히 천안캠퍼스 정류장의 경우
+                destination.setText("아산캠퍼스행");  // 프래그먼트 텍스트뷰 설정
+                calcTime(dbCcamToAcam, dbNameCcamToAcam, Station, time);    // 시간 계산해서 입력
+
+                // 정류장 지도 보기 버튼 리스너 처리
                 view.findViewById(R.id.item_where).setOnClickListener(
                         new Button.OnClickListener() {
                             public void onClick(View v) {
                                 Intent intent = new Intent(getActivity(),MapActivity.class);
-                                intent.putExtra("stationName", "아산캠퍼스");
+                                intent.putExtra("stationName", Station);
+                                intent.putExtra("destination", Station);
+                                startActivity(intent);
+                            }
+                        }
+                );
+                break;
+            case 1: // 아산캠퍼스를 포함한 모든 천캠행 정류장의 경우
+                destination.setText("천안캠퍼스행");
+                calcTime(dbAcamToCcam, dbNameAcamToCcam, Station, time);
+
+                view.findViewById(R.id.item_where).setOnClickListener(
+                        new Button.OnClickListener() {
+                            public void onClick(View v) {
+                                Intent intent = new Intent(getActivity(), MapActivity.class);
+                                intent.putExtra("stationName", Station);
                                 intent.putExtra("destination", "천캠행");
                                 startActivity(intent);
                             }
                         }
                 );
-
-            } else if(args.getCharSequence(KEY_TITLE).equals("천안터미널")) {
-
-                setStationFragment(view, layout, layout2, "천안터미널");
-
-            } else if(args.getCharSequence(KEY_TITLE).equals("천안역")) {
-
-                setStationFragment(view, layout, layout2, "천안역");
-
-            } else if(args.getCharSequence(KEY_TITLE).equals("충무병원")) {
-
-                setStationFragment(view, layout, layout2, "충무병원");
-
-            } else if(args.getCharSequence(KEY_TITLE).equals("쌍용동")) {
-
-                setStationFragment(view, layout, layout2, "쌍용동");
-
-            } else if(args.getCharSequence(KEY_TITLE).equals("천안아산역")) {
-
-                setStationFragment(view, layout, layout2, "천안아산역");
-
-            } /*else {
-                layout.setBackgroundResource(R.drawable.bg_acam);
-
-                TextView destination = (TextView) view.findViewById(R.id.item_destination);
-                destination.setText("천안캠퍼스행");
-                TextView time = (TextView) view.findViewById(R.id.item_time);
-                time.setText("N/A");
-
-                layout2.setBackgroundResource(R.drawable.bg_acam);
-
-                TextView destination2 = (TextView) view.findViewById(R.id.item_destination2);
+                break;
+            case 2: // 뷰페이저 아래쪽에 해당하는 아캠행 정류장의 경우
                 destination2.setText("아산캠퍼스행");
-                TextView time2 = (TextView) view.findViewById(R.id.item_time2);
-                time2.setText("N/A");
+                calcTime(dbCcamToAcam, dbNameCcamToAcam, Station, time2);
 
-
-                int dividerColor = args.getInt(KEY_DIVIDER_COLOR);
-                TextView dividerColorView = (TextView) view.findViewById(R.id.item_divider_color);
-                dividerColorView.setText("Divider: #" + Integer.toHexString(dividerColor));
-                dividerColorView.setTextColor(dividerColor);
-
-            }
-            */
+                view.findViewById(R.id.item_where2).setOnClickListener(
+                        new Button.OnClickListener() {
+                            public void onClick(View v) {
+                                Intent intent = new Intent(getActivity(), MapActivity.class);
+                                intent.putExtra("stationName", Station);
+                                intent.putExtra("destination", "아캠행");
+                                startActivity(intent);
+                            }
+                        }
+                );
+                break;
         }
     }
 
-    // 뷰페이저에 프래그먼트를 그려주는 메소드
-    public void setStationFragment(View view, RelativeLayout layout, RelativeLayout layout2, final String station) {
-        layout.setBackgroundResource(R.drawable.bg_terminal1);
+    // 전체 시간표 보기 버튼 리스너 처리 (천캠행/아캠행)
+    Button.OnClickListener onClickListener_TimetableToCcam = new View.OnClickListener() {
+        public void onClick(View v) {
+            Intent intent = new Intent(getActivity(), TimetableActivity.class);
+            intent.putExtra("destination", "천캠행");
+            intent.putExtra("whatDay", whatDay);
+            startActivity(intent);
+        }
+    };
+    Button.OnClickListener onClickListener_TimetableToAcam = new View.OnClickListener() {
+        public void onClick(View v) {
+            Intent intent = new Intent(getActivity(), TimetableActivity.class);
+            intent.putExtra("destination", "아캠행");
+            intent.putExtra("whatDay", whatDay);
+            startActivity(intent);
+        }
+    };
 
-        TextView destination = (TextView) view.findViewById(R.id.item_destination);
-        destination.setText("천안캠퍼스행");
-        TextView time = (TextView) view.findViewById(R.id.item_time);
-        calcTime(dbAcamToCcam, dbNameAcamToCcam, "terminal", time);
-
-        layout2.setBackgroundResource(R.drawable.bg_terminal2);
-
-        TextView destination2 = (TextView) view.findViewById(R.id.item_destination2);
-        destination2.setText("아산캠퍼스행");
-        TextView time2 = (TextView) view.findViewById(R.id.item_time2);
-        calcTime(dbCcamToAcam, dbNameCcamToAcam, "terminal", time2);
-
-        // 전체 시간표 보기 버튼 리스너 처리
-        view.findViewById(R.id.item_timetable).setOnClickListener(
-                new Button.OnClickListener() {
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(),TimetableActivity.class);
-                        intent.putExtra("stationName", station + " 천캠행");
-                        intent.putExtra("whatDay", whatDay);
-                        startActivity(intent);
-                    }
-                }
-        );
-        view.findViewById(R.id.item_timetable2).setOnClickListener(
-                new Button.OnClickListener() {
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(),TimetableActivity.class);
-                        intent.putExtra("stationName", station + " 아캠행");
-                        intent.putExtra("whatDay", whatDay);
-                        startActivity(intent);
-                    }
-                }
-        );
-        view.findViewById(R.id.item_where).setOnClickListener(
-                new Button.OnClickListener() {
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(),MapActivity.class);
-                        intent.putExtra("stationName", station);
-                        intent.putExtra("destination", "천캠행");
-                        startActivity(intent);
-                    }
-                }
-        );
-        view.findViewById(R.id.item_where2).setOnClickListener(
-                new Button.OnClickListener() {
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(),MapActivity.class);
-                        intent.putExtra("stationName", station);
-                        intent.putExtra("destination", "아캠행");
-                        startActivity(intent);
-                    }
-                }
-        );
-    }
 
     // 남은 시간을 계산해서 주는 메소드
     public void calcTime(SQLiteDatabase db, String tableName, String station, TextView time) {

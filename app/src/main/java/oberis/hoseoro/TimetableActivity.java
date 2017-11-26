@@ -33,7 +33,8 @@ public class TimetableActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timetable);
 
         Intent intent = getIntent();
-        String stationName = intent.getStringExtra("stationName");
+        //String stationName = intent.getStringExtra("stationName");
+        String destination = intent.getStringExtra("destination");
         int whatDay = intent.getIntExtra("whatDay", 1);
 
         // DB관련 작업
@@ -80,9 +81,10 @@ public class TimetableActivity extends AppCompatActivity {
         TextView tableColumn6 = (TextView) findViewById((R.id.table_column6));
         TextView tableColumn7 = (TextView) findViewById((R.id.table_column7));
 
-        if (stationName.equals("천안캠퍼스") || stationName.equals("천안터미널 아캠행")
+        /*if (stationName.equals("천안캠퍼스") || stationName.equals("천안터미널 아캠행")
                 || stationName.equals("천안역 아캠행") || stationName.equals("충무병원 아캠행")
-                || stationName.equals("쌍용동 아캠행") || stationName.equals("천안아산역 아캠행")) {
+                || stationName.equals("쌍용동 아캠행") || stationName.equals("천안아산역 아캠행")) {*/
+        if (destination.equals("아캠행")) {
             table_Row.setText("천안캠퍼스 출발 > 아산캠퍼스 도착");
             tableColumn1.setText("천캠\n출발");
             tableColumn2.setText("천안\n터미널");
@@ -108,9 +110,10 @@ public class TimetableActivity extends AppCompatActivity {
                 } while (cursor.moveToNext());
             }
         }
-        else if (stationName.equals("아산캠퍼스") || stationName.equals("천안터미널 천캠행")
+        /*else if (stationName.equals("아산캠퍼스") || stationName.equals("천안터미널 천캠행")
                 || stationName.equals("천안역 천캠행") || stationName.equals("충무병원 천캠행")
-                || stationName.equals("쌍용동 천캠행") || stationName.equals("천안아산역 천캠행")) {
+                || stationName.equals("쌍용동 천캠행") || stationName.equals("천안아산역 천캠행")) {*/
+        else if (destination.equals("천캠행")) {
             table_Row.setText("아산캠퍼스 출발 > 천안캠퍼스 도착");
             tableColumn1.setText("아캠\n출발");
             tableColumn2.setText("KTX\n천안\n아산역");

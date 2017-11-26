@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -12,8 +13,7 @@
             android:layout_alignParentTop="true"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/item_where"
-            android:onClick="onClickMap"/>
+            android:background="@drawable/item_where"/>
 
         <ImageButton
             android:id="@+id/item_timetable"
@@ -22,10 +22,9 @@
             android:layout_alignParentTop="true"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/item_timetable"
-            android:onClick="onClickTimetable"/>
-1
-        <TextView
+            android:background="@drawable/item_timetable"/>
+
+        <oberis.hoseoro.CustomTextView
             android:id="@+id/item_destination"
             android:layout_margin="10dp"
             android:layout_alignParentRight="true"
@@ -35,9 +34,12 @@
             android:textColor="@color/White"
             android:textSize="40dp"
             android:textStyle="bold"
+            app:textStroke="true"
+            app:textStrokeWidth="10.0"
+            app:textStrokeColor="@color/colorMain"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <TextView
+        <oberis.hoseoro.CustomTextView
             android:id="@+id/item_time"
             android:layout_marginLeft="10dp"
             android:layout_alignParentLeft="true"
@@ -47,9 +49,12 @@
             android:textColor="@color/White"
             android:textSize="60sp"
             android:textStyle="bold"
+            app:textStroke="true"
+            app:textStrokeWidth="13.0"
+            app:textStrokeColor="@color/colorMain"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <TextView
+        <oberis.hoseoro.CustomTextView
             android:id="@+id/item_timetext"
             android:layout_toRightOf="@id/item_time"
             android:layout_alignParentBottom="true"
@@ -59,6 +64,9 @@
             android:text="분 남음"
             android:textColor="@color/White"
             android:textSize="40sp"
+            app:textStroke="true"
+            app:textStrokeWidth="10.0"
+            app:textStrokeColor="@color/colorMain"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

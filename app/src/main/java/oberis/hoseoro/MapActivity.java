@@ -43,13 +43,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         LatLng STATION;
         MarkerOptions markerOptions;
 
-        if (stationName.equals("천안캠퍼스")) {
+        if (stationName.equals("cCam")) {
             STATION = new LatLng(36.829926, 127.180610);
             markerOptions = new MarkerOptions();
             markerOptions.position(STATION);
             markerOptions.title("천안캠퍼스");
             markerOptions.snippet("호서대 천안캠퍼스");
-        } else if (stationName.equals("천안터미널")){
+        } else if (stationName.equals("terminal")){
             if (destination.equals("천캠행")) {
                 STATION = new LatLng(36.818760, 127.155420);
             } else {
@@ -59,31 +59,31 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             markerOptions.position(STATION);
             markerOptions.title("천안터미널");
             markerOptions.snippet("야우리");
-        } else if (stationName.equals("천안역")){
+        } else if (stationName.equals("station")){
             STATION = new LatLng(36.809528, 127.147378);
             markerOptions = new MarkerOptions();
             markerOptions.position(STATION);
             markerOptions.title("천안역");
             markerOptions.snippet("전철/기차 승강장");
-        } else if (stationName.equals("충무병원")){
+        } else if (stationName.equals("hospital")){
             STATION = new LatLng(37.56, 126.97);
             markerOptions = new MarkerOptions();
             markerOptions.position(STATION);
             markerOptions.title("충무병원");
             markerOptions.snippet("약 엄청 많이 줌");
-        } else if (stationName.equals("쌍용3동")){
+        } else if (stationName.equals("road")){
             STATION = new LatLng(37.56, 126.97);
             markerOptions = new MarkerOptions();
             markerOptions.position(STATION);
             markerOptions.title("쌍용3동");
             markerOptions.snippet("길바닥");
-        } else if (stationName.equals("천안아산역")){
+        } else if (stationName.equals("ktx")){
             STATION = new LatLng(37.56, 126.97);
             markerOptions = new MarkerOptions();
             markerOptions.position(STATION);
             markerOptions.title("천안아산역");
             markerOptions.snippet("KTX개꿀");
-        } else if (stationName.equals("아산캠퍼스")){
+        } else if (stationName.equals("aCam")){
             STATION = new LatLng(36.738585, 127.076982);
             markerOptions = new MarkerOptions();
             markerOptions.position(STATION);
