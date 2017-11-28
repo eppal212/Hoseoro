@@ -17,17 +17,20 @@
 package oberis.hoseoro;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 // 슬라이딩되는 탭을 만들기 위한 커스텀뷰
 public class SlidingTabLayout extends HorizontalScrollView {
@@ -101,7 +104,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
     // 뷰페이저를 설정
     public void setViewPager(ViewPager viewPager) {
-        // mTabStrip.removeAllViews();
+        mTabStrip.removeAllViews();
 
         mViewPager = viewPager;
         if (viewPager != null) {
@@ -169,7 +172,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
             if (i == mViewPager.getCurrentItem()) {
                 tabView.setSelected(true);
             }
-
             //tabTitleView.setTextColor(getResources().getColor(R.color.colorMain));           // 글자색 (단일 색으로)
             tabTitleView.setTextColor(getResources().getColorStateList(R.color.selector));  // 글자색 (선택됐을 때 변경)
             //tabTitleView.setTextSize(16.0f);    // 글자 크기 - 최상단 상수로 조정
@@ -187,6 +189,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
         }
     }
 
+    // 원하는 곳으로 탭 이동
     private void scrollToTab(int tabIndex, int positionOffset) {
         final int tabStripChildCount = mTabStrip.getChildCount();
         if (tabStripChildCount == 0 || tabIndex < 0 || tabIndex >= tabStripChildCount) {
@@ -209,6 +212,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
     private class InternalViewPagerListener implements ViewPager.OnPageChangeListener {
         private int mScrollState;
 
+        // 뷰페이지를 스크롤 했을때
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             int tabStripChildCount = mTabStrip.getChildCount();
@@ -239,6 +243,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
             }
         }
 
+        // 탭을 눌렀을 때
         @Override
         public void onPageSelected(int position) {
             if (mScrollState == ViewPager.SCROLL_STATE_IDLE) {
@@ -254,7 +259,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 mViewPagerPageChangeListener.onPageSelected(position);
             }
         }
-
     }
 
     private class TabClickListener implements OnClickListener {

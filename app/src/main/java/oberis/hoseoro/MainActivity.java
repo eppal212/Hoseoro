@@ -1,20 +1,28 @@
 package oberis.hoseoro;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -23,7 +31,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    boolean shuttleMode = true; // 학기중이냐 방학중이냐를 결정하는 모드. true가 학기중
+    boolean shuttleMode = true; // 학기중이냐 방학중이냐를 결정하는 모드. true가 학기중 / false가 방학중
     int whatDay = 1;    // 무슨 요일을 선택했느냐 하는 변수
     RadioGroup radioGroup;  // 평일 or 토요일 or 일요일 선택하는 라디오 그룹, onCreate에서 사용
 
@@ -35,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     List<DrawerItem> dataList;
 
     long backKeyPressedTime; //백버튼 클릭 시간
+
+    SlidingTabsFragment fragment;   // makeFragment(), invalidateThread() 수행에 사용됨
+    Handler handler = new Handler();    // UI수정 Thread를 위해 Handler 사용
 
     public MainActivity() {
     }
@@ -89,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         dataList = new ArrayList<DrawerItem>();
         dataList.add(new DrawerItem(" 학기중 셔틀버스", R.drawable.ic_term));
         dataList.add(new DrawerItem(" 방학중 셔틀버스", R.drawable.ic_vacation));
-        dataList.add(new DrawerItem(" 온양순환(학기중)", R.drawable.ic_onyang));
+        dataList.add(new DrawerItem(" 온양순환(학기/방학중)", R.drawable.ic_onyang));
 
         // 리스트뷰에 어댑터 연결
         adapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item, dataList);
@@ -119,6 +130,13 @@ public class MainActivity extends AppCompatActivity {
      * onCreate() 메소드 부분 끝
      */
 
+    // 시간 변화시 새로고침을 수행해주는 스레드를 실행하는 타이밍 onResume()
+    @Override
+    protected void onResume() {
+        super.onResume();
+        InvalidateThread thread = new InvalidateThread();   // 새로고침 스레드
+        thread.start();
+    }
 
     /**
      * 백버튼 터치로 인한 앱 종료 부분
@@ -156,13 +174,13 @@ public class MainActivity extends AppCompatActivity {
     public void SelectItem(int possition) {
         Bundle args = new Bundle();
         switch (possition) {
-            case 0:
+            case 0: // 학기중 셔틀 선택
                 setTermTimeMode();
                 break;
-            case 1:
+            case 1: // 방학중 셔틀 선택
                 setVacationMode();
                 break;
-            case 2:
+            case 2: // 온양순환 선택
                 startActivity(new Intent(MainActivity.this,OnYangActivity.class));
                 //finish();
                 break;
@@ -227,15 +245,27 @@ public class MainActivity extends AppCompatActivity {
     private void setTermTimeMode() {
         shuttleMode = true;
         ImageView imageview = (ImageView)findViewById(R.id.title_image);
-        imageview.setImageResource(R.drawable.ic_title1);
+        imageview.setImageResource(R.drawable.ic_title1);   // 제목 부분 바꾸기
+
+        RadioButton holidayRadioButton = (RadioButton) findViewById(R.id.button2);
+        holidayRadioButton.setEnabled(true);
+
         makeFragment(shuttleMode, whatDay);
     }
-
     // 방학중 셔틀 버튼을 눌렀을 때
     private void setVacationMode() {
         shuttleMode = false;
         ImageView imageview = (ImageView)findViewById(R.id.title_image);
         imageview.setImageResource(R.drawable.ic_title2);
+
+        // 평일 버튼이 자동으로 눌리도록
+        radioGroup.check(R.id.button1);
+        whatDay = 1;
+
+        // 토/일/공휴일 버튼 못누르게
+        RadioButton holidayRadioButton = (RadioButton) findViewById(R.id.button2);
+        holidayRadioButton.setEnabled(false);
+
         makeFragment(shuttleMode, whatDay);
     }
 
@@ -248,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void makeFragment(boolean shuttleMode, int whatDay) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        SlidingTabsFragment fragment = new SlidingTabsFragment();
+        fragment = new SlidingTabsFragment();
         Bundle bundle = new Bundle(2); // 파라미터는 전달할 데이터 개수
         bundle.putBoolean("shuttleMode", shuttleMode);
         bundle.putInt("whatDay", whatDay); // key , value
@@ -256,4 +286,41 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.content_fragment, fragment);
         transaction.commit();
     }
+
+    /**
+     * 시간이 지남에 따라 뷰페이저를 새로고침 해주기 위한 스레드
+     */
+    public class InvalidateThread extends Thread{
+        // 시간 계산을 위한 변수들
+        long curTime;
+        int lastMinute = 0;
+        int curMinute;
+
+        @Override
+        public void run() {
+            while (true) {  // 메인스레드 외에 무한으로 시간을 검사해야함
+                curTime = System.currentTimeMillis();   // 현재 시간
+                curMinute = (int)(curTime / (1000 * 60));   // 현재 분 계산
+
+                if (curMinute != lastMinute) {  // 분 비교
+                    handler.post(new Runnable() {   // UI수정 파트만 핸들러 처리
+                        public void run() {
+                            // 프래그먼트 새로고침
+                            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                            transaction.detach(fragment).attach(fragment).commit();
+                        }
+                    });
+                    lastMinute = curMinute;
+                }
+
+                try {   // 10초마다 검사
+                    sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
 }
+

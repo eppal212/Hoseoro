@@ -116,7 +116,12 @@ public class SlidingTabsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        mViewPager.setAdapter(new SampleFragmentPagerAdapter(getChildFragmentManager()));   // ViewPager를 표시할 수 있도록 어댑터 연결
+        mViewPager.setAdapter(new SampleFragmentPagerAdapter(getChildFragmentManager()) /*{
+            @Override
+            public int getItemPosition(Object object) {
+                return POSITION_NONE;
+            }
+        }*/);   // ViewPager를 표시할 수 있도록 어댑터 연결
 
         // SlidingTabLayout에 ViewPager를 넘기려면 PagerAdapter가 붙어있어야 함
         mSlidingTabLayout = (SlidingTabLayout) view.findViewById(R.id.sliding_tabs);

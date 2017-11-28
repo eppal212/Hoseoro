@@ -4,10 +4,16 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Canvas;
 import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 import android.widget.TextView;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * TextView에 테두리를 넣기 위한 사용자 지정 View
@@ -21,6 +27,7 @@ public class CustomTextView extends TextView {
     private float strokeWidth = 0.0f;
     private int strokeColor;
 
+    // 기본 생성자를 포함한 3개의 생성자
     public CustomTextView(Context context) {
         super(context);
     }
@@ -33,6 +40,7 @@ public class CustomTextView extends TextView {
         super(context, attrs, defStyle); initView(context, attrs);
     }
 
+    // 생성자에서 사용되는 변수 초기화 메소드
     private void initView(Context context, AttributeSet attrs) {
         // attrs.xml 사용 준비 & 정의한 속성 할당
         TypedArray aray = context.obtainStyledAttributes(attrs, R.styleable.CustomTextView);

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 토/일/공휴일 버튼 색상셀렉터 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 비활성화 됐을 때 -->
+    <item
+        android:state_enabled="false"
+        android:color="@color/Gray" />
+
     <item
         android:state_checked="false"
         android:color="#504f4f" />

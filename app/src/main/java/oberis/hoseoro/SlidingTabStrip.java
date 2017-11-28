@@ -104,7 +104,7 @@ class SlidingTabStrip extends LinearLayout {
         invalidate();
     }*/
 
-    // 뷰페이저 페이지가 넘어갈때 리스터
+    // 뷰페이저 페이지가 넘어갈때 리스너
     void onViewPagerPageChanged(int position, float positionOffset) {
         mSelectedPosition = position;
         mSelectionOffset = positionOffset;
