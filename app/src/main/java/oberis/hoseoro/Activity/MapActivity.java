@@ -1,4 +1,4 @@
-package oberis.hoseoro;
+package oberis.hoseoro.Activity;
 
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import oberis.hoseoro.R;
 
 // 참고자료 http://webnautes.tistory.com/647
 

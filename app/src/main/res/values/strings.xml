@@ -18,4 +18,21 @@
     <string name="drawer_open">drawer_open</string>
     <string name="drawer_close">drawer_close</string>
 
+    <!-- 온양순환 시간표 출력에서 쓰임 -->
+    <string name="onyang_column1">아캠\n출발</string>
+    <string name="onyang_column2">배방역</string>
+    <string name="onyang_column3">시외버스\n터미널</string>
+    <string name="onyang_column4">온양\n온천역</string>
+    <string name="onyang_column5">배방역</string>
+    <string name="onyang_column6">아캠\n도착</string>
+
+    <!-- 설정창에서 쓰임 -->
+    <string name="lispref_key">listpref_selectCampus</string>
+    <string name="listpref_title">캠퍼스 설정</string>
+    <string name="listpref_dialogTitle">캠퍼스 설정 (앱 재시작 후 적용)</string>
+    <string name="listpref_summary">summary 초기화 오류</string>
+    <string name="listpref_defaultValue">cCam</string>
+
+    <string name="ref_notice">* 1인개발이라 여러가지 기기에서 테스트하지 못하는점 양해바랍니다.</string>
+
 </resources>

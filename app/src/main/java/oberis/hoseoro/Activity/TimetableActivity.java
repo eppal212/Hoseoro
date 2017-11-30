@@ -1,4 +1,4 @@
-package oberis.hoseoro;
+package oberis.hoseoro.Activity;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,10 +11,20 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import oberis.hoseoro.Database.HolidayAcamToCcamDB;
+import oberis.hoseoro.Database.HolidayCcamToAcamDB;
+import oberis.hoseoro.Database.TermAcamToCcamDB;
+import oberis.hoseoro.Database.TermCcamToAcamDB;
+import oberis.hoseoro.Database.VacAcamToCcamDB;
+import oberis.hoseoro.Database.VacCcamToAcamDB;
+import oberis.hoseoro.R;
+
 public class TimetableActivity extends AppCompatActivity {
 
     TermCcamToAcamDB termCcamToAcamDB;
     TermAcamToCcamDB termAcamToCcamDB;
+    VacCcamToAcamDB vacCcamToAcamDB;
+    VacAcamToCcamDB vacAcamToCcamDB;
     HolidayCcamToAcamDB holidayCcamToAcamDB;
     HolidayAcamToCcamDB holidayAcamToCcamDB;
     SQLiteDatabase dbCcamToAcam, dbAcamToCcam;
@@ -35,39 +45,55 @@ public class TimetableActivity extends AppCompatActivity {
         Intent intent = getIntent();
         //String stationName = intent.getStringExtra("stationName");
         String destination = intent.getStringExtra("destination");
+        boolean shuttleMode = intent.getBooleanExtra("shuttleMode", true);
         int whatDay = intent.getIntExtra("whatDay", 1);
 
         // DB관련 작업
-        switch (whatDay) {
-            case 1:
-                termCcamToAcamDB = new TermCcamToAcamDB(this);
-                termAcamToCcamDB = new TermAcamToCcamDB(this);
-                try {
-                    dbCcamToAcam = termCcamToAcamDB.getWritableDatabase();
-                    dbAcamToCcam = termAcamToCcamDB.getWritableDatabase();
-                    dbNameCcamToAcam = "TermCcamToAcam";
-                    dbNameAcamToCcam = "TermAcamToCcam";
-                } catch (SQLException ex) {
-                    dbCcamToAcam = termCcamToAcamDB.getReadableDatabase();
-                    dbAcamToCcam = termAcamToCcamDB.getReadableDatabase();
-                }
-                rowCount = 84; // 맨 아래 데이터 출력 부분에서 쓸 변수 초기화 - 요일에 따라 행의 갯수가 달라짐
-                break;
+        if (shuttleMode == true) {  // 학기중일 때
+            switch (whatDay) {
+                case 1:
+                    termCcamToAcamDB = new TermCcamToAcamDB(this);
+                    termAcamToCcamDB = new TermAcamToCcamDB(this);
+                    try {
+                        dbCcamToAcam = termCcamToAcamDB.getWritableDatabase();
+                        dbAcamToCcam = termAcamToCcamDB.getWritableDatabase();
+                        dbNameCcamToAcam = "TermCcamToAcam";
+                        dbNameAcamToCcam = "TermAcamToCcam";
+                    } catch (SQLException ex) {
+                        dbCcamToAcam = termCcamToAcamDB.getReadableDatabase();
+                        dbAcamToCcam = termAcamToCcamDB.getReadableDatabase();
+                    }
+                    rowCount = 84; // 맨 아래 데이터 출력 부분에서 쓸 변수 초기화 - 요일에 따라 행의 갯수가 달라짐
+                    break;
 
-            case 2:
-                holidayCcamToAcamDB = new HolidayCcamToAcamDB(this);
-                holidayAcamToCcamDB = new HolidayAcamToCcamDB(this);
-                try {
-                    dbCcamToAcam = holidayCcamToAcamDB.getWritableDatabase();
-                    dbAcamToCcam = holidayAcamToCcamDB.getWritableDatabase();
-                    dbNameCcamToAcam = "HolidayCcamToAcam";
-                    dbNameAcamToCcam = "HolidayAcamToCcam";
-                } catch (SQLException ex) {
-                    dbCcamToAcam = holidayCcamToAcamDB.getReadableDatabase();
-                    dbAcamToCcam = holidayAcamToCcamDB.getReadableDatabase();
-                }
-                rowCount = 24;
-                break;
+                case 2:
+                    holidayCcamToAcamDB = new HolidayCcamToAcamDB(this);
+                    holidayAcamToCcamDB = new HolidayAcamToCcamDB(this);
+                    try {
+                        dbCcamToAcam = holidayCcamToAcamDB.getWritableDatabase();
+                        dbAcamToCcam = holidayAcamToCcamDB.getWritableDatabase();
+                        dbNameCcamToAcam = "HolidayCcamToAcam";
+                        dbNameAcamToCcam = "HolidayAcamToCcam";
+                    } catch (SQLException ex) {
+                        dbCcamToAcam = holidayCcamToAcamDB.getReadableDatabase();
+                        dbAcamToCcam = holidayAcamToCcamDB.getReadableDatabase();
+                    }
+                    rowCount = 24;
+                    break;
+            }
+        } else {    // 방학줄일 때
+            vacCcamToAcamDB = new VacCcamToAcamDB(this);
+            vacAcamToCcamDB = new VacAcamToCcamDB(this);
+            try {
+                dbCcamToAcam = vacCcamToAcamDB.getWritableDatabase();
+                dbAcamToCcam = vacAcamToCcamDB.getWritableDatabase();
+                dbNameCcamToAcam = "VacCcamToAcam";
+                dbNameAcamToCcam = "VacAcamToCcam";
+            } catch (SQLException ex) {
+                dbCcamToAcam = vacCcamToAcamDB.getReadableDatabase();
+                dbAcamToCcam = vacAcamToCcamDB.getReadableDatabase();
+            }
+            rowCount = 14;
         }
         dbArray = new String[rowCount][7];  // 배열 초기화
 

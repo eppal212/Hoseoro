@@ -53,7 +53,6 @@
                     android:layout_marginLeft="1dp"
                     android:gravity="center_vertical|center_horizontal"
                     android:padding="3dp"
-                    android:text="KTX\n천안아산역"
                     android:textColor="@color/White"
                     android:textStyle="bold"/>
 
@@ -66,7 +65,6 @@
                     android:layout_marginLeft="1dp"
                     android:gravity="center_vertical|center_horizontal"
                     android:padding="3dp"
-                    android:text="쌍용2동"
                     android:textColor="@color/White"
                     android:textStyle="bold"/>
 
@@ -79,7 +77,6 @@
                     android:layout_marginLeft="1dp"
                     android:gravity="center_vertical|center_horizontal"
                     android:padding="3dp"
-                    android:text="충무병원"
                     android:textColor="@color/White"
                     android:textStyle="bold"/>
 
@@ -92,7 +89,6 @@
                     android:layout_marginLeft="1dp"
                     android:gravity="center_vertical|center_horizontal"
                     android:padding="3dp"
-                    android:text="천안역"
                     android:textColor="@color/White"
                     android:textStyle="bold"/>
 
@@ -105,7 +101,6 @@
                     android:layout_marginLeft="1dp"
                     android:gravity="center_vertical|center_horizontal"
                     android:padding="3dp"
-                    android:text="천안터미널"
                     android:textColor="@color/White"
                     android:textStyle="bold"/>
 
@@ -118,7 +113,6 @@
                     android:layout_marginLeft="1dp"
                     android:gravity="center_vertical|center_horizontal"
                     android:padding="3dp"
-                    android:text="천캠도착"
                     android:textColor="@color/White"
                     android:textStyle="bold"/>
 

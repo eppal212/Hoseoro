@@ -1,28 +1,31 @@
-package oberis.hoseoro;
+package oberis.hoseoro.SlidingTabView;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
         import android.support.v4.app.Fragment;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import oberis.hoseoro.Activity.MapActivity;
+import oberis.hoseoro.Activity.TimetableActivity;
+import oberis.hoseoro.Database.HolidayAcamToCcamDB;
+import oberis.hoseoro.Database.HolidayCcamToAcamDB;
+import oberis.hoseoro.Database.TermAcamToCcamDB;
+import oberis.hoseoro.Database.TermCcamToAcamDB;
+import oberis.hoseoro.Database.VacAcamToCcamDB;
+import oberis.hoseoro.Database.VacCcamToAcamDB;
+import oberis.hoseoro.R;
 
 // 뷰페이저의 프래그먼트에 내용을 표시하는 역할
 public class ContentFragment extends Fragment {
@@ -37,6 +40,8 @@ public class ContentFragment extends Fragment {
 
     TermCcamToAcamDB termCcamToAcamDB;
     TermAcamToCcamDB termAcamToCcamDB;
+    VacCcamToAcamDB vacCcamToAcamDB;
+    VacAcamToCcamDB vacAcamToCcamDB;
     HolidayCcamToAcamDB holidayCcamToAcamDB;
     HolidayAcamToCcamDB holidayAcamToCcamDB;
     SQLiteDatabase dbCcamToAcam, dbAcamToCcam;
@@ -64,32 +69,47 @@ public class ContentFragment extends Fragment {
         whatDay = getArguments().getInt("whatDay");
 
         // DB관련 작업
-        termCcamToAcamDB = new TermCcamToAcamDB(getActivity());
-        termAcamToCcamDB = new TermAcamToCcamDB(getActivity());
-        holidayCcamToAcamDB = new HolidayCcamToAcamDB(getActivity());
-        holidayAcamToCcamDB = new HolidayAcamToCcamDB(getActivity());
+        if (shuttleMode == true) {  // 학기중일 때
+            termCcamToAcamDB = new TermCcamToAcamDB(getActivity());
+            termAcamToCcamDB = new TermAcamToCcamDB(getActivity());
+            holidayCcamToAcamDB = new HolidayCcamToAcamDB(getActivity());
+            holidayAcamToCcamDB = new HolidayAcamToCcamDB(getActivity());
 
-        if (whatDay == 1) {
-            try {
-                dbCcamToAcam = termCcamToAcamDB.getWritableDatabase();
-                dbAcamToCcam = termAcamToCcamDB.getWritableDatabase();
-            } catch (SQLException ex) {
-                dbCcamToAcam = termCcamToAcamDB.getReadableDatabase();
-                dbAcamToCcam = termAcamToCcamDB.getReadableDatabase();
-            }
-            dbNameCcamToAcam = "TermCcamToAcam";
-            dbNameAcamToCcam = "TermAcamToCcam";
-        } else if (whatDay == 2) {
-            try {
-                dbCcamToAcam = holidayCcamToAcamDB.getWritableDatabase();
-                dbAcamToCcam = holidayAcamToCcamDB.getWritableDatabase();
+            if (whatDay == 1) {
+                try {
+                    dbCcamToAcam = termCcamToAcamDB.getWritableDatabase();
+                    dbAcamToCcam = termAcamToCcamDB.getWritableDatabase();
+                } catch (SQLException ex) {
+                    dbCcamToAcam = termCcamToAcamDB.getReadableDatabase();
+                    dbAcamToCcam = termAcamToCcamDB.getReadableDatabase();
+                }
+                dbNameCcamToAcam = "TermCcamToAcam";
+                dbNameAcamToCcam = "TermAcamToCcam";
+            } else if (whatDay == 2) {
+                try {
+                    dbCcamToAcam = holidayCcamToAcamDB.getWritableDatabase();
+                    dbAcamToCcam = holidayAcamToCcamDB.getWritableDatabase();
 
-            } catch (SQLException ex) {
-                dbCcamToAcam = holidayCcamToAcamDB.getReadableDatabase();
-                dbAcamToCcam = holidayAcamToCcamDB.getReadableDatabase();
+                } catch (SQLException ex) {
+                    dbCcamToAcam = holidayCcamToAcamDB.getReadableDatabase();
+                    dbAcamToCcam = holidayAcamToCcamDB.getReadableDatabase();
+                }
+                dbNameCcamToAcam = "HolidayCcamToAcam";
+                dbNameAcamToCcam = "HolidayAcamToCcam";
             }
-            dbNameCcamToAcam = "HolidayCcamToAcam";
-            dbNameAcamToCcam = "HolidayAcamToCcam";
+        } else {    // 방학중일 때
+            vacCcamToAcamDB = new VacCcamToAcamDB(getActivity());
+            vacAcamToCcamDB = new VacAcamToCcamDB(getActivity());
+
+            try {
+                dbCcamToAcam = vacCcamToAcamDB.getWritableDatabase();
+                dbAcamToCcam = vacAcamToCcamDB.getWritableDatabase();
+            } catch (SQLException ex) {
+                dbCcamToAcam = vacCcamToAcamDB.getReadableDatabase();
+                dbAcamToCcam = vacAcamToCcamDB.getReadableDatabase();
+            }
+            dbNameCcamToAcam = "VacCcamToAcam";
+            dbNameAcamToCcam = "VacAcamToCcam";
         }
 
         Bundle args = getArguments();
@@ -246,6 +266,7 @@ public class ContentFragment extends Fragment {
         public void onClick(View v) {
             Intent intent = new Intent(getActivity(), TimetableActivity.class);
             intent.putExtra("destination", "천캠행");
+            intent.putExtra("shuttleMode", shuttleMode);
             intent.putExtra("whatDay", whatDay);
             startActivity(intent);
         }
@@ -254,6 +275,7 @@ public class ContentFragment extends Fragment {
         public void onClick(View v) {
             Intent intent = new Intent(getActivity(), TimetableActivity.class);
             intent.putExtra("destination", "아캠행");
+            intent.putExtra("shuttleMode", shuttleMode);
             intent.putExtra("whatDay", whatDay);
             startActivity(intent);
         }

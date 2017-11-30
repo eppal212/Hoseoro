@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-package oberis.hoseoro;
+package oberis.hoseoro.SlidingTabView;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import oberis.hoseoro.R;
 
 // 슬라이딩되는 탭을 만들기 위한 커스텀뷰
 public class SlidingTabLayout extends HorizontalScrollView {

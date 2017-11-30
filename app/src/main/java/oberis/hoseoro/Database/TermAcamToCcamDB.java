@@ -1,4 +1,4 @@
-package oberis.hoseoro;
+package oberis.hoseoro.Database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

@@ -25,7 +25,7 @@
 
         <!-- 스플래시 이미지 -->
         <activity
-            android:name=".SplashActivity"
+            android:name=".Activity.SplashActivity"
             android:theme="@style/SplashTheme"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -36,22 +36,27 @@
         </activity>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".Activity.MainActivity"
             android:screenOrientation="portrait">
         </activity>
 
         <activity
-            android:name=".OnYangActivity"
+            android:name=".Activity.OnYangActivity"
             android:screenOrientation="portrait">
         </activity>
 
         <activity
-            android:name=".MapActivity"
+            android:name=".Activity.MapActivity"
             android:screenOrientation="portrait">
         </activity>
 
         <activity
-            android:name=".TimetableActivity"
+            android:name=".Activity.TimetableActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".Activity.SettingsActivity"
             android:screenOrientation="portrait">
         </activity>
     </application>

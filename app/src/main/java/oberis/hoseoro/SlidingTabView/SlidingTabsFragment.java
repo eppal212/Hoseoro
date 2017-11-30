@@ -14,20 +14,27 @@
  * limitations under the License.
  */
 
-package oberis.hoseoro;
+package oberis.hoseoro.SlidingTabView;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.ListPreference;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import oberis.hoseoro.Activity.SettingsActivity;
+import oberis.hoseoro.R;
 
 // 탭을 구현하는 부분
 public class SlidingTabsFragment extends Fragment {
@@ -83,19 +90,24 @@ public class SlidingTabsFragment extends Fragment {
         Boolean shuttleMode = getArguments().getBoolean("shuttleMode");
         int whatDay = getArguments().getInt("whatDay");
 
-        mTabs.add(new PagerItem(getString(R.string.tab_cCam), shuttleMode, whatDay));
-
-        mTabs.add(new PagerItem(getString(R.string.tab_terminal), shuttleMode, whatDay));
-
-        mTabs.add(new PagerItem(getString(R.string.tab_station), shuttleMode, whatDay));
-
-        mTabs.add(new PagerItem(getString(R.string.tab_hospital), shuttleMode, whatDay));
-
-        mTabs.add(new PagerItem(getString(R.string.tab_road), shuttleMode, whatDay));
-
-        mTabs.add(new PagerItem(getString(R.string.tab_ktx), shuttleMode, whatDay));
-
-        mTabs.add(new PagerItem(getString(R.string.tab_aCam), shuttleMode, whatDay));
+        String listref_value = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(getString(R.string.lispref_key), "");
+        if (listref_value.equals("cCam")) {
+            mTabs.add(new PagerItem(getString(R.string.tab_cCam), shuttleMode, whatDay));
+            mTabs.add(new PagerItem(getString(R.string.tab_terminal), shuttleMode, whatDay));
+            mTabs.add(new PagerItem(getString(R.string.tab_station), shuttleMode, whatDay));
+            mTabs.add(new PagerItem(getString(R.string.tab_hospital), shuttleMode, whatDay));
+            mTabs.add(new PagerItem(getString(R.string.tab_road), shuttleMode, whatDay));
+            mTabs.add(new PagerItem(getString(R.string.tab_ktx), shuttleMode, whatDay));
+            mTabs.add(new PagerItem(getString(R.string.tab_aCam), shuttleMode, whatDay));
+        } else if (listref_value.equals("aCam")) {
+            mTabs.add(new PagerItem(getString(R.string.tab_aCam), shuttleMode, whatDay));
+            mTabs.add(new PagerItem(getString(R.string.tab_ktx), shuttleMode, whatDay));
+            mTabs.add(new PagerItem(getString(R.string.tab_road), shuttleMode, whatDay));
+            mTabs.add(new PagerItem(getString(R.string.tab_hospital), shuttleMode, whatDay));
+            mTabs.add(new PagerItem(getString(R.string.tab_station), shuttleMode, whatDay));
+            mTabs.add(new PagerItem(getString(R.string.tab_terminal), shuttleMode, whatDay));
+            mTabs.add(new PagerItem(getString(R.string.tab_cCam), shuttleMode, whatDay));
+        }
     }
 
     // 탭 부분이 보이도록 인플레이트 시킴

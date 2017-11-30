@@ -1,24 +1,19 @@
-package oberis.hoseoro;
+package oberis.hoseoro.Activity;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -28,6 +23,11 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import oberis.hoseoro.CustomDrawerAdapter;
+import oberis.hoseoro.DrawerItem;
+import oberis.hoseoro.R;
+import oberis.hoseoro.SlidingTabView.SlidingTabsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,10 +41,12 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     CustomDrawerAdapter adapter;
     List<DrawerItem> dataList;
+    int curPosition = 0;    // 온양순환 눌렀을때 최근 아이템이 눌린상태를 유지하기 위해 최근 아이템을 기억
 
     long backKeyPressedTime; //백버튼 클릭 시간
 
     SlidingTabsFragment fragment;   // makeFragment(), invalidateThread() 수행에 사용됨
+    boolean run = true; // 새로고침 스레드 실행/일시중지를 관리하는 변수
     Handler handler = new Handler();    // UI수정 Thread를 위해 Handler 사용
 
     public MainActivity() {
@@ -54,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         backKeyPressedTime = System.currentTimeMillis();    // 백버튼 클릭 초기화
 
@@ -101,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         dataList.add(new DrawerItem(" 학기중 셔틀버스", R.drawable.ic_term));
         dataList.add(new DrawerItem(" 방학중 셔틀버스", R.drawable.ic_vacation));
         dataList.add(new DrawerItem(" 온양순환(학기/방학중)", R.drawable.ic_onyang));
+        dataList.add(new DrawerItem(" 설정", R.drawable.ic_settings));
 
         // 리스트뷰에 어댑터 연결
         adapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item, dataList);
@@ -136,29 +141,14 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         InvalidateThread thread = new InvalidateThread();   // 새로고침 스레드
         thread.start();
+        run = true;
     }
 
-    /**
-     * 백버튼 터치로 인한 앱 종료 부분
-     */
     @Override
-    public void onBackPressed() {
-        //1번째 백버튼 클릭
-        if(System.currentTimeMillis()>backKeyPressedTime+2000){
-            backKeyPressedTime = System.currentTimeMillis();
-            Toast.makeText(this, "한 번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
-        }
-        //2번째 백버튼 클릭 (종료)
-        else{
-            finish();
-            System.exit(0);
-            android.os.Process.killProcess(android.os.Process.myPid());
-        }
+    protected void onPause() {
+        super.onPause();
+        run = false;
     }
-    /**
-     * 앱종료 파트 끝
-     */
-
 
     /**
      * 네비게이션 드로어 자세한 부분
@@ -176,19 +166,27 @@ public class MainActivity extends AppCompatActivity {
         switch (possition) {
             case 0: // 학기중 셔틀 선택
                 setTermTimeMode();
+                curPosition = possition;
+                mDrawerList.setItemChecked(possition, true);
                 break;
             case 1: // 방학중 셔틀 선택
                 setVacationMode();
+                curPosition = possition;
+                mDrawerList.setItemChecked(possition, true);
                 break;
             case 2: // 온양순환 선택
+                mDrawerList.setItemChecked(curPosition, true);
                 startActivity(new Intent(MainActivity.this,OnYangActivity.class));
                 //finish();
+                break;
+            case 3: // 설정 선택
+                mDrawerList.setItemChecked(curPosition, true);
+                startActivity(new Intent(MainActivity.this,SettingsActivity.class));
                 break;
             default:
                 break;
         }
 
-        mDrawerList.setItemChecked(possition, true);
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
@@ -225,6 +223,28 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * 네비게시션 드로어 부분 끝
+     */
+
+
+    /**
+     * 백버튼 터치로 인한 앱 종료 부분
+     */
+    @Override
+    public void onBackPressed() {
+        //1번째 백버튼 클릭
+        if(System.currentTimeMillis()>backKeyPressedTime+2000){
+            backKeyPressedTime = System.currentTimeMillis();
+            Toast.makeText(this, "한 번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+        }
+        //2번째 백버튼 클릭 (종료)
+        else{
+            finish();
+            System.exit(0);
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
+    }
+    /**
+     * 앱종료 파트 끝
      */
 
 
@@ -298,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-            while (true) {  // 메인스레드 외에 무한으로 시간을 검사해야함
+            while (run) {  // 메인스레드 외에 무한으로 시간을 검사해야함
                 curTime = System.currentTimeMillis();   // 현재 시간
                 curMinute = (int)(curTime / (1000 * 60));   // 현재 분 계산
 
@@ -313,8 +333,8 @@ public class MainActivity extends AppCompatActivity {
                     lastMinute = curMinute;
                 }
 
-                try {   // 10초마다 검사
-                    sleep(10000);
+                try {   // 1초마다 검사
+                    sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

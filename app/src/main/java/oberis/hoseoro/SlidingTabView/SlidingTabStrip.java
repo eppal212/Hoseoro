@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-package oberis.hoseoro;
+package oberis.hoseoro.SlidingTabView;
 
 import android.R;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 class SlidingTabStrip extends LinearLayout {
 
     /*private static final int DEFAULT_BOTTOM_BORDER_THICKNESS_DIPS = 2;
     private static final byte DEFAULT_BOTTOM_BORDER_COLOR_ALPHA = 0x00; // 구분하는 밑줄 원래 0x26*/
     private static final int SELECTED_INDICATOR_THICKNESS_DIPS = 4; // 선택된 밑줄 원래 8
-    private static final int DEFAULT_SELECTED_INDICATOR_COLOR = 0xFF33B5E5;
+    private static final int DEFAULT_SELECTED_INDICATOR_COLOR = 0xFF1E88E5; // 원래 0xFF33B5E5
 
     /*private static final int DEFAULT_DIVIDER_THICKNESS_DIPS = 1;
     private static final byte DEFAULT_DIVIDER_COLOR_ALPHA = 0x20;

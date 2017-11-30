@@ -3,5 +3,8 @@
     <item
         android:state_checked="true"
         android:drawable="@drawable/button1_checked" />
+    <item
+        android:state_checked="false"
+        android:drawable="@drawable/button1_unchecked" />
 
 </selector>

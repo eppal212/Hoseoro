@@ -1,4 +1,4 @@
-package oberis.hoseoro;
+package oberis.hoseoro.Activity;
 
 import android.app.Activity;
 import android.content.Intent;

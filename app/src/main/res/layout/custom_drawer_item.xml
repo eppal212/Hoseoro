@@ -9,7 +9,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:orientation="vertical"
-
         android:layout_marginTop="0dp"
         android:background="?android:attr/activatedBackgroundIndicator"
         >
@@ -35,7 +34,6 @@
                 android:textColor="@color/colorMain"
                 android:textSize="16sp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-
                 />
         </LinearLayout>
 
