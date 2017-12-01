@@ -27,12 +27,29 @@
     <string name="onyang_column6">아캠\n도착</string>
 
     <!-- 설정창에서 쓰임 -->
-    <string name="lispref_key">listpref_selectCampus</string>
-    <string name="listpref_title">캠퍼스 설정</string>
-    <string name="listpref_dialogTitle">캠퍼스 설정 (앱 재시작 후 적용)</string>
-    <string name="listpref_summary">summary 초기화 오류</string>
-    <string name="listpref_defaultValue">cCam</string>
+    <string name="campusPref_key">campusPref_key</string>
+    <string name="campusPref_title">캠퍼스 설정</string>
+    <string name="campusPref_dialogTitle">
+        캠퍼스 설정 (앱 재시작 후 적용)\n
+        표시되는 정류장 순서 변경\n
+    </string>
+    <string name="campusPref_summary">summary 초기화 오류</string>
+    <string name="campusPref_defaultValue">cCam</string>
 
-    <string name="ref_notice">* 1인개발이라 여러가지 기기에서 테스트하지 못하는점 양해바랍니다.</string>
+    <string name="termPref_key">termPref_key</string>
+    <string name="termPref_title">시간표 설정</string>
+    <string name="termPref_dialogTitle">
+        시간표 설정\n
+        시작시 보여줄 기본 시간표 설정
+    </string>
+    <string name="termPref_summary">summary 초기화 오류</string>
+    <string name="termPref_defaultValue">term</string>
+
+    <string name="ref_notice">
+        * 학교 홈페이지에서 제공하는 시간표를 준수합니다.\n
+          별도의 특별운행은 표시되지 않습니다.\n
+        * 1인개발 여건상 여러 기기에서 테스트하지 못한 점 양해바랍니다.\n
+        * 아이폰은 지원하지 않습니다.
+    </string>
 
 </resources>

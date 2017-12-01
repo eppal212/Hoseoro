@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="listpref_entries">
+    <string-array name="campusPref_entries">
     <item>천안캠퍼스 -> 아산캠퍼스</item>
     <item>아산캠퍼스 -> 천안캠퍼스</item>
     </string-array>
 
-    <string-array name="listpref_values">
+    <string-array name="campusPref_values">
         <item>cCam</item>
         <item>aCam</item>
+    </string-array>
+
+    <string-array name="termPref_entries">
+        <item>학기중 시간표</item>
+        <item>방학중 시간표</item>
+    </string-array>
+
+    <string-array name="termPref_values">
+        <item>term</item>
+        <item>vacation</item>
     </string-array>
 </resources>

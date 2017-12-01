@@ -1,5 +1,6 @@
 package oberis.hoseoro.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Handler;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // 앱을 처음기동시 설정값들을 기본으로 적용해줌
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         backKeyPressedTime = System.currentTimeMillis();    // 백버튼 클릭 초기화
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         // 앱이 처음 시작됐을 때 뷰페이저 부분을 그려주기 위함
         if (savedInstanceState == null) {
-            makeFragment(shuttleMode, whatDay); // makeFragment 메소드가 뷰페이저를 그려주는 역할
+            makeFragment(); // makeFragment 메소드가 뷰페이저를 그려주는 역할
         }
 
 
@@ -83,10 +85,10 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if(checkedId == R.id.button1){
                     whatDay = 1;
-                    makeFragment(shuttleMode, whatDay);
+                    makeFragment();
                 } else if (checkedId == R.id.button2) {
                     whatDay = 2;
-                    makeFragment(shuttleMode, whatDay);
+                    makeFragment();
                 }
             }
         });
@@ -110,7 +112,17 @@ public class MainActivity extends AppCompatActivity {
         // 리스트뷰에 어댑터 연결
         adapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item, dataList);
         mDrawerList.setAdapter(adapter);
-        mDrawerList.setItemChecked(0, true); // 초기값 설정
+
+        // 설정값에 따라 앱 시작시 기본 설정값을 바꿔줌
+        String termPref_value = PreferenceManager.getDefaultSharedPreferences(this).getString(getString(R.string.termPref_key), "");
+        if (termPref_value.equals("term")) {
+            mDrawerList.setItemChecked(0, true); // 초기값 설정
+            selectItem(0);
+        } else if (termPref_value.equals("vacation")) {
+            mDrawerList.setItemChecked(1, true);
+            selectItem(1);
+        }
+
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());   // 리스트 클릭 리스너 설정
 
         // 네비게이션 드로어 열기/닫기 감지
@@ -157,11 +169,11 @@ public class MainActivity extends AppCompatActivity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
-            SelectItem(position);
+            selectItem(position);
         }
     }
     // 리스트 골랐을 때 작업
-    public void SelectItem(int possition) {
+    public void selectItem(int possition) {
         Bundle args = new Bundle();
         switch (possition) {
             case 0: // 학기중 셔틀 선택
@@ -270,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
         RadioButton holidayRadioButton = (RadioButton) findViewById(R.id.button2);
         holidayRadioButton.setEnabled(true);
 
-        makeFragment(shuttleMode, whatDay);
+        makeFragment();
     }
     // 방학중 셔틀 버튼을 눌렀을 때
     private void setVacationMode() {
@@ -286,17 +298,15 @@ public class MainActivity extends AppCompatActivity {
         RadioButton holidayRadioButton = (RadioButton) findViewById(R.id.button2);
         holidayRadioButton.setEnabled(false);
 
-        makeFragment(shuttleMode, whatDay);
+        makeFragment();
     }
 
 
     /**
      * 뷰페이저 부분을 생성해주는 메소드
      * 프래그먼트 생성하고, 파라미터 주고, 연결까지 해주는 메소드
-     * @param shuttleMode   // 학기중/방학중 판단
-     * @param whatDay  // 평일/토요일/일요일 판단
      */
-    public void makeFragment(boolean shuttleMode, int whatDay) {
+    public void makeFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         fragment = new SlidingTabsFragment();
         Bundle bundle = new Bundle(2); // 파라미터는 전달할 데이터 개수

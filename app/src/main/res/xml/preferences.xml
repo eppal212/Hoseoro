@@ -4,14 +4,24 @@
     android:layout_width="match_parent">
 
     <ListPreference
-        android:key="@string/lispref_key"
-        android:title="@string/listpref_title"
-        android:dialogTitle="@string/listpref_dialogTitle"
-        android:summary="@string/listpref_summary"
-        android:entries="@array/listpref_entries"
-        android:entryValues="@array/listpref_values"
-        android:defaultValue="@string/listpref_defaultValue"
-        android:icon="@drawable/ic_vacation" />
+        android:key="@string/campusPref_key"
+        android:title="@string/campusPref_title"
+        android:dialogTitle="@string/campusPref_dialogTitle"
+        android:summary="@string/campusPref_summary"
+        android:entries="@array/campusPref_entries"
+        android:entryValues="@array/campusPref_values"
+        android:defaultValue="@string/campusPref_defaultValue"
+        android:icon="@drawable/ic_campuspref" />
+
+    <ListPreference
+        android:key="@string/termPref_key"
+        android:title="@string/termPref_title"
+        android:dialogTitle="@string/termPref_dialogTitle"
+        android:summary="@string/termPref_summary"
+        android:entries="@array/termPref_entries"
+        android:entryValues="@array/termPref_values"
+        android:defaultValue="@string/termPref_defaultValue"
+        android:icon="@drawable/ic_termpref" />
 
     <Preference
         android:title="개발자  컴퓨터공학과 11학번"

@@ -8,7 +8,9 @@
 
         <ImageButton
             android:id="@+id/item_where"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="17dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_width="40dp"
@@ -17,7 +19,7 @@
 
         <ImageButton
             android:id="@+id/item_timetable"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="17dp"
             android:layout_toRightOf="@id/item_where"
             android:layout_alignParentTop="true"
             android:layout_width="40dp"
@@ -25,14 +27,30 @@
             android:background="@drawable/item_timetable"/>
 
         <oberis.hoseoro.CustomTextView
-            android:id="@+id/item_destination"
-            android:layout_margin="10dp"
+            android:id="@+id/item_busstation"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/White"
             android:textSize="40dp"
+            android:textStyle="bold"
+            app:textStroke="true"
+            app:textStrokeWidth="13.0"
+            app:textStrokeColor="@color/colorMain"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <oberis.hoseoro.CustomTextView
+            android:id="@+id/item_destination"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_below="@id/item_busstation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/White"
+            android:textSize="25sp"
             android:textStyle="bold"
             app:textStroke="true"
             app:textStrokeWidth="10.0"
@@ -61,7 +79,6 @@
             android:layout_alignBaseline="@id/item_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="분 남음"
             android:textColor="@color/White"
             android:textSize="40sp"
             app:textStroke="true"

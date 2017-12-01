@@ -6,7 +6,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
         import android.support.v4.app.Fragment;
-        import android.view.LayoutInflater;
+import android.util.Log;
+import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import java.util.Date;
 
 import oberis.hoseoro.Activity.MapActivity;
 import oberis.hoseoro.Activity.TimetableActivity;
+import oberis.hoseoro.CustomTextView;
 import oberis.hoseoro.Database.HolidayAcamToCcamDB;
 import oberis.hoseoro.Database.HolidayCcamToAcamDB;
 import oberis.hoseoro.Database.TermAcamToCcamDB;
@@ -36,6 +38,7 @@ public class ContentFragment extends Fragment {
 
     Boolean shuttleMode;
     int whatDay;
+    String BusstationName;
     String dbNameCcamToAcam, dbNameAcamToCcam;
 
     TermCcamToAcamDB termCcamToAcamDB;
@@ -127,24 +130,24 @@ public class ContentFragment extends Fragment {
         RelativeLayout layout2 = (RelativeLayout) view.findViewById(R.id.fragment_layout2);
 
         Bundle args = getArguments();
+        BusstationName = args.getCharSequence(KEY_TITLE).toString();
 
         if (args != null) {
-            // 학기중 셔틀
-            if(args.getCharSequence(KEY_TITLE).equals("천안캠퍼스")) {
+            if(BusstationName.equals("천안캠퍼스")) {
                 layout.setBackgroundResource(R.drawable.bg_ccam);   // 배경이미지 설정
 
                 setStationFragment(view, "cCam", 0);    // 프래그먼트의 뷰들 처리
 
                 view.findViewById(R.id.item_timetable).setOnClickListener(onClickListener_TimetableToAcam); // 시간표 버튼 이벤트 처리
 
-            } else if(args.getCharSequence(KEY_TITLE).equals("아산캠퍼스")) {
+            } else if(BusstationName.equals("아산캠퍼스")) {
                 layout.setBackgroundResource(R.drawable.bg_acam);
 
                 setStationFragment(view, "aCam", 1);
 
                 view.findViewById(R.id.item_timetable).setOnClickListener(onClickListener_TimetableToCcam);
 
-            } else if(args.getCharSequence(KEY_TITLE).equals("천안터미널")) {
+            } else if(BusstationName.equals("천안터미널")) {
                 layout.setBackgroundResource(R.drawable.bg_terminal1);
                 layout2.setBackgroundResource(R.drawable.bg_terminal2);
 
@@ -154,7 +157,7 @@ public class ContentFragment extends Fragment {
                 view.findViewById(R.id.item_timetable).setOnClickListener(onClickListener_TimetableToCcam);
                 view.findViewById(R.id.item_timetable2).setOnClickListener(onClickListener_TimetableToAcam);
 
-            } else if(args.getCharSequence(KEY_TITLE).equals("천안역")) {
+            } else if(BusstationName.equals("천안역")) {
                 layout.setBackgroundResource(R.drawable.bg_terminal1);
                 layout2.setBackgroundResource(R.drawable.bg_terminal2);
 
@@ -164,7 +167,7 @@ public class ContentFragment extends Fragment {
                 view.findViewById(R.id.item_timetable).setOnClickListener(onClickListener_TimetableToCcam);
                 view.findViewById(R.id.item_timetable2).setOnClickListener(onClickListener_TimetableToAcam);
 
-            } else if(args.getCharSequence(KEY_TITLE).equals("충무병원")) {
+            } else if(BusstationName.equals("충무병원")) {
                 layout.setBackgroundResource(R.drawable.bg_terminal1);
                 layout2.setBackgroundResource(R.drawable.bg_terminal2);
 
@@ -174,7 +177,7 @@ public class ContentFragment extends Fragment {
                 view.findViewById(R.id.item_timetable).setOnClickListener(onClickListener_TimetableToCcam);
                 view.findViewById(R.id.item_timetable2).setOnClickListener(onClickListener_TimetableToAcam);
 
-            } else if(args.getCharSequence(KEY_TITLE).equals("쌍용동")) {
+            } else if(BusstationName.equals("쌍용동")) {
                 layout.setBackgroundResource(R.drawable.bg_terminal1);
                 layout2.setBackgroundResource(R.drawable.bg_terminal2);
 
@@ -184,7 +187,7 @@ public class ContentFragment extends Fragment {
                 view.findViewById(R.id.item_timetable).setOnClickListener(onClickListener_TimetableToCcam);
                 view.findViewById(R.id.item_timetable2).setOnClickListener(onClickListener_TimetableToAcam);
 
-            } else if(args.getCharSequence(KEY_TITLE).equals("천안아산역")) {
+            } else if(BusstationName.equals("천안아산역")) {
                 layout.setBackgroundResource(R.drawable.bg_terminal1);
                 layout2.setBackgroundResource(R.drawable.bg_terminal2);
 
@@ -206,15 +209,20 @@ public class ContentFragment extends Fragment {
      */
     public void setStationFragment(View view, final String Station, int fragmentNumber) {
 
+        TextView busstation = (TextView) view.findViewById(R.id.item_busstation);
+        TextView busstation2 = (TextView) view.findViewById(R.id.item_busstation2);
         TextView destination = (TextView) view.findViewById(R.id.item_destination);
         TextView destination2 = (TextView) view.findViewById(R.id.item_destination2);
         TextView time = (TextView) view.findViewById(R.id.item_time);
         TextView time2 = (TextView) view.findViewById(R.id.item_time2);
+        TextView timetext = (TextView) view.findViewById(R.id.item_timetext);
+        TextView timetext2 = (TextView) view.findViewById(R.id.item_timetext2);
 
         switch (fragmentNumber) {
             case 0: // 특별히 천안캠퍼스 정류장의 경우
-                destination.setText("아산캠퍼스행");  // 프래그먼트 텍스트뷰 설정
-                calcTime(dbCcamToAcam, dbNameCcamToAcam, Station, time);    // 시간 계산해서 입력
+                busstation.setText(BusstationName);  // 프래그먼트 텍스트뷰 설정
+                destination.setText("아산캠퍼스행");
+                calcTime(dbCcamToAcam, dbNameCcamToAcam, Station, time, timetext, timetext2);    // 시간 계산해서 입력
 
                 // 정류장 지도 보기 버튼 리스너 처리
                 view.findViewById(R.id.item_where).setOnClickListener(
@@ -229,8 +237,12 @@ public class ContentFragment extends Fragment {
                 );
                 break;
             case 1: // 아산캠퍼스를 포함한 모든 천캠행 정류장의 경우
+                if (BusstationName.equals("쌍용동"))
+                    busstation.setText("쌍용2동");
+                else
+                    busstation.setText(BusstationName);
                 destination.setText("천안캠퍼스행");
-                calcTime(dbAcamToCcam, dbNameAcamToCcam, Station, time);
+                calcTime(dbAcamToCcam, dbNameAcamToCcam, Station, time, timetext, timetext2);
 
                 view.findViewById(R.id.item_where).setOnClickListener(
                         new Button.OnClickListener() {
@@ -244,8 +256,12 @@ public class ContentFragment extends Fragment {
                 );
                 break;
             case 2: // 뷰페이저 아래쪽에 해당하는 아캠행 정류장의 경우
+                if (BusstationName.equals("쌍용동"))
+                    busstation2.setText("쌍용3동");
+                else
+                    busstation2.setText(BusstationName);
                 destination2.setText("아산캠퍼스행");
-                calcTime(dbCcamToAcam, dbNameCcamToAcam, Station, time2);
+                calcTime(dbCcamToAcam, dbNameCcamToAcam, Station, time2, timetext, timetext2);
 
                 view.findViewById(R.id.item_where2).setOnClickListener(
                         new Button.OnClickListener() {
@@ -282,8 +298,15 @@ public class ContentFragment extends Fragment {
     };
 
 
-    // 남은 시간을 계산해서 주는 메소드
-    public void calcTime(SQLiteDatabase db, String tableName, String station, TextView time) {
+    /**
+     *  남은 시간을 계산해서 주는 메소드
+     * @param db    // 시간을 참조할 DB
+     * @param tableName // DB의 테이블 이름
+     * @param station   // 시간을 표시할 정류장
+     * @param time  // 시간을 표시할 텍스트뷰
+     * @param timetext
+     */
+    public void calcTime(SQLiteDatabase db, String tableName, String station, TextView time, TextView timetext, TextView timetext2) {
         //커서를 이용해 DB 접근
         Cursor cursor = db.rawQuery("SELECT " + station + " FROM " + tableName + ";", null);
         // DB 시간 계산
@@ -304,11 +327,17 @@ public class ContentFragment extends Fragment {
                 if (dbTime.after(nowTime)) {    // 표시할지 비교 ~ db시간이 더 늦어야 함
                     long temp = (dbTime.getTime() - nowTime.getTime()) / (60 * 1000);   // 계산
                     time.setText(String.valueOf(temp));
+                    timetext.setText("분 남음");
+                    if (timetext2 != null)  // null일때 : 천캠,아캠 페이지
+                        timetext2.setText("분 남음");
                     break;
                 }
 
                 if (cursor.isLast()) {
                     time.setText("운행종료");
+                    timetext.setText(" ");
+                    if (timetext2 != null)
+                        timetext2.setText(" ");
                     break;
                 }
             } while (cursor.moveToNext());

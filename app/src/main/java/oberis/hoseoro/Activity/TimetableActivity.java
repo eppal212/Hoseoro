@@ -116,7 +116,7 @@ public class TimetableActivity extends AppCompatActivity {
             tableColumn2.setText("천안\n터미널");
             tableColumn3.setText("천안역");
             tableColumn4.setText("충무\n병원");
-            tableColumn5.setText("쌍용동");
+            tableColumn5.setText("쌍용\n3동");
             tableColumn6.setText("KTX\n천안\n아산역");
             tableColumn7.setText("아캠\n도착");
 
@@ -143,7 +143,7 @@ public class TimetableActivity extends AppCompatActivity {
             table_Row.setText("아산캠퍼스 출발 > 천안캠퍼스 도착");
             tableColumn1.setText("아캠\n출발");
             tableColumn2.setText("KTX\n천안\n아산역");
-            tableColumn3.setText("쌍용동");
+            tableColumn3.setText("쌍용\n2동");
             tableColumn4.setText("충무\n병원");
             tableColumn5.setText("천안역");
             tableColumn6.setText("천안\n터미널");
