@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class TermAcamToCcamDB extends SQLiteOpenHelper {
     final static private String DB_NAME = "TermAcamToCcam.db";
-    final static private int DB_VERSION = 3;
+    final static private int DB_VERSION = 5;
 
     public TermAcamToCcamDB(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -76,10 +76,10 @@ public class TermAcamToCcamDB extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '17:30', '17:45', '17:50', '17:55', '18:05', '18:15', '18:25');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '17:35', '17:50', '17:55', '18:00', '18:10', '18:20', '18:30');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '17:40', '17:55', '18:00', '18:05', '18:15', '18:25', '18:35');");
-        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '17:45', '18:00', '18:05', '18:10', '18:20', '18:35', '18:45');"); // 특이사항
+        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '17:45', '18:00', '18:05', '18:10', '18:20', '-', '-');"); // 특이사항
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '17:50', '18:05', '18:10', '18:15', '18:25', '18:35', '18:45');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '18:00', '18:15', '18:20', '18:25', '18:35', '18:45', '18:55');");
-        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '18:05', '18:20', '18:25', '18:30', '18:40', '18:55', '19:05');"); // 특이사항
+        db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '18:05', '18:20', '18:25', '18:30', '18:40', '-', '-');"); // 특이사항
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '18:10', '18:25', '18:30', '18:35', '18:45', '18:55', '19:05');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '18:20', '18:35', '18:40', '18:45', '18:55', '19:05', '19:15');");
         db.execSQL("INSERT INTO TermAcamToCcam VALUES (null, '18:30', '18:45', '18:50', '18:55', '19:05', '19:15', '19:25');");

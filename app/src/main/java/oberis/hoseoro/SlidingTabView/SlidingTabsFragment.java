@@ -16,16 +16,14 @@
 
 package oberis.hoseoro.SlidingTabView;
 
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.ListPreference;
+
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +31,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import oberis.hoseoro.Activity.SettingsActivity;
 import oberis.hoseoro.R;
 
 // 탭을 구현하는 부분
@@ -43,7 +40,6 @@ public class SlidingTabsFragment extends Fragment {
     static class PagerItem {
         private final CharSequence mTitle;  // 이름
         private final int mIndicatorColor = Color.parseColor("#1E88E5"); // 선택됐을 때 색깔 : R.color.colorMain
-        /*private final int mDividerColor = Color.WHITE;   // 탭끼리 구분선 : 하얗게 해서 구분선 없는것처럼*/
         boolean shuttleMode;    // 학기중/방학중
         int whatDay;    // 평일/토/일
 
@@ -67,9 +63,6 @@ public class SlidingTabsFragment extends Fragment {
         int getIndicatorColor() {
             return mIndicatorColor;
         }
-        /*int getDividerColor() {
-            return mDividerColor;
-        }*/
     }
 
 
@@ -128,19 +121,13 @@ public class SlidingTabsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        mViewPager.setAdapter(new SampleFragmentPagerAdapter(getChildFragmentManager()) /*{
-            @Override
-            public int getItemPosition(Object object) {
-                return POSITION_NONE;
-            }
-        }*/);   // ViewPager를 표시할 수 있도록 어댑터 연결
+        mViewPager.setAdapter(new SampleFragmentPagerAdapter(getChildFragmentManager()));   // ViewPager를 표시할 수 있도록 어댑터 연결
 
         // SlidingTabLayout에 ViewPager를 넘기려면 PagerAdapter가 붙어있어야 함
         mSlidingTabLayout = (SlidingTabLayout) view.findViewById(R.id.sliding_tabs);
         mSlidingTabLayout.setViewPager(mViewPager);
 
         mSlidingTabLayout.setSelectedIndicatorColors(Color.parseColor("#1E88E5"));  // 탭이 눌렸을 때 색 변화
-        /*mSlidingTabLayout.setDividerColors(Color.WHITE);    // 탭과 탭간의 구분선 색 설정*/
     }
 
 

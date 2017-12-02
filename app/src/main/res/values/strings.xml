@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">호서로 테스트</string>
-
-    <string name="button1">평일</string>
-
-    <string name="margin">10dp</string>
+    <string name="app_name">호서대 셔틀버스</string>
 
     <string name="tab_cCam">천안캠퍼스</string>
     <string name="tab_terminal">천안터미널</string>
@@ -48,7 +44,6 @@
     <string name="ref_notice">
         * 학교 홈페이지에서 제공하는 시간표를 준수합니다.\n
           별도의 특별운행은 표시되지 않습니다.\n
-        * 1인개발 여건상 여러 기기에서 테스트하지 못한 점 양해바랍니다.\n
         * 아이폰은 지원하지 않습니다.
     </string>
 

@@ -20,7 +20,6 @@ import java.util.Date;
 
 import oberis.hoseoro.Activity.MapActivity;
 import oberis.hoseoro.Activity.TimetableActivity;
-import oberis.hoseoro.CustomTextView;
 import oberis.hoseoro.Database.HolidayAcamToCcamDB;
 import oberis.hoseoro.Database.HolidayCcamToAcamDB;
 import oberis.hoseoro.Database.TermAcamToCcamDB;
@@ -50,12 +49,10 @@ public class ContentFragment extends Fragment {
     SQLiteDatabase dbCcamToAcam, dbAcamToCcam;
 
     // 새로운 프래그먼트를 만들어서 반환하는 메소드
-    public static ContentFragment newInstance(CharSequence title, int indicatorColor,
-                                              /*int dividerColor,*/ boolean shuttleMode, int whatDay) {
+    public static ContentFragment newInstance(CharSequence title, int indicatorColor, boolean shuttleMode, int whatDay) {
         Bundle bundle = new Bundle();
         bundle.putCharSequence(KEY_TITLE, title);
         bundle.putInt(KEY_INDICATOR_COLOR, indicatorColor);
-        /*bundle.putInt(KEY_DIVIDER_COLOR, dividerColor);*/
         bundle.putBoolean("shuttleMode", shuttleMode);
         bundle.putInt("whatDay", whatDay);
 
@@ -158,8 +155,8 @@ public class ContentFragment extends Fragment {
                 view.findViewById(R.id.item_timetable2).setOnClickListener(onClickListener_TimetableToAcam);
 
             } else if(BusstationName.equals("천안역")) {
-                layout.setBackgroundResource(R.drawable.bg_terminal1);
-                layout2.setBackgroundResource(R.drawable.bg_terminal2);
+                layout.setBackgroundResource(R.drawable.bg_station1);
+                layout2.setBackgroundResource(R.drawable.bg_station2);
 
                 setStationFragment(view, "station",1);
                 setStationFragment(view, "station",2);
@@ -168,8 +165,8 @@ public class ContentFragment extends Fragment {
                 view.findViewById(R.id.item_timetable2).setOnClickListener(onClickListener_TimetableToAcam);
 
             } else if(BusstationName.equals("충무병원")) {
-                layout.setBackgroundResource(R.drawable.bg_terminal1);
-                layout2.setBackgroundResource(R.drawable.bg_terminal2);
+                layout.setBackgroundResource(R.drawable.bg_hospital1);
+                layout2.setBackgroundResource(R.drawable.bg_hospital2);
 
                 setStationFragment(view, "hospital",1);
                 setStationFragment(view, "hospital",2);
@@ -178,8 +175,8 @@ public class ContentFragment extends Fragment {
                 view.findViewById(R.id.item_timetable2).setOnClickListener(onClickListener_TimetableToAcam);
 
             } else if(BusstationName.equals("쌍용동")) {
-                layout.setBackgroundResource(R.drawable.bg_terminal1);
-                layout2.setBackgroundResource(R.drawable.bg_terminal2);
+                layout.setBackgroundResource(R.drawable.bg_road1);
+                layout2.setBackgroundResource(R.drawable.bg_road2);
 
                 setStationFragment(view, "road",1);
                 setStationFragment(view, "road",2);
@@ -188,15 +185,14 @@ public class ContentFragment extends Fragment {
                 view.findViewById(R.id.item_timetable2).setOnClickListener(onClickListener_TimetableToAcam);
 
             } else if(BusstationName.equals("천안아산역")) {
-                layout.setBackgroundResource(R.drawable.bg_terminal1);
-                layout2.setBackgroundResource(R.drawable.bg_terminal2);
+                layout.setBackgroundResource(R.drawable.bg_ktx1);
+                layout2.setBackgroundResource(R.drawable.bg_ktx2);
 
                 setStationFragment(view, "ktx",1);
                 setStationFragment(view, "ktx",2);
 
                 view.findViewById(R.id.item_timetable).setOnClickListener(onClickListener_TimetableToCcam);
                 view.findViewById(R.id.item_timetable2).setOnClickListener(onClickListener_TimetableToAcam);
-
             }
         }
     }
@@ -281,6 +277,7 @@ public class ContentFragment extends Fragment {
     Button.OnClickListener onClickListener_TimetableToCcam = new View.OnClickListener() {
         public void onClick(View v) {
             Intent intent = new Intent(getActivity(), TimetableActivity.class);
+            intent.putExtra("stationName", BusstationName);
             intent.putExtra("destination", "천캠행");
             intent.putExtra("shuttleMode", shuttleMode);
             intent.putExtra("whatDay", whatDay);
@@ -290,6 +287,7 @@ public class ContentFragment extends Fragment {
     Button.OnClickListener onClickListener_TimetableToAcam = new View.OnClickListener() {
         public void onClick(View v) {
             Intent intent = new Intent(getActivity(), TimetableActivity.class);
+            intent.putExtra("stationName", BusstationName);
             intent.putExtra("destination", "아캠행");
             intent.putExtra("shuttleMode", shuttleMode);
             intent.putExtra("whatDay", whatDay);
@@ -304,7 +302,8 @@ public class ContentFragment extends Fragment {
      * @param tableName // DB의 테이블 이름
      * @param station   // 시간을 표시할 정류장
      * @param time  // 시간을 표시할 텍스트뷰
-     * @param timetext
+     * @param timetext  // "분 남음" 텍스트뷰 처리
+     * @param timetext2
      */
     public void calcTime(SQLiteDatabase db, String tableName, String station, TextView time, TextView timetext, TextView timetext2) {
         //커서를 이용해 DB 접근
@@ -312,6 +311,10 @@ public class ContentFragment extends Fragment {
         // DB 시간 계산
         if (cursor.moveToFirst()) {
             do {
+                if (cursor.getString(cursor.getColumnIndex(station)).equals("-")) {   // 행이 null이면 다음거로 건너뜀
+                    continue;
+                }
+
                 SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");   // DateFormat
 
                 Date now = new Date(System.currentTimeMillis());    // 현재 시간 구함

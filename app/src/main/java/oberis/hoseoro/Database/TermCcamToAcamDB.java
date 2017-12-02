@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class TermCcamToAcamDB extends SQLiteOpenHelper{
     final static private String DB_NAME = "TermCcamToAcam.db";
-    final static private int DB_VERSION = 6;
+    final static private int DB_VERSION = 8;
 
     public TermCcamToAcamDB(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -23,23 +23,23 @@ public class TermCcamToAcamDB extends SQLiteOpenHelper{
                 "ktx TEXT, " +
                 "aCam TEXT);");
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '7:45', '7:55', '8:05', '8:10', '8:15', '8:25', '8:40');");
-        db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '8:00', '8:10', '8:15', '8:20', '8:25', '8:35', '8:50');");    //
+        db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '-', '-', '8:15', '8:20', '8:25', '8:35', '8:50');");    //
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '8:00', '8:10', '8:20', '8:25', '8:30', '8:40', '8:55');");
-        db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '8:10', '8:20', '8:25', '8:30', '8:35', '8:43', '9:58');");    //
-        db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '8:10', '8:20', '8:25', '8:30', '8:35', '8:45', '9:00');");    //
+        db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '-', '-', '-', '-', '-', '8:43', '9:58');");    //
+        db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '-', '-', '8:25', '8:30', '8:35', '8:45', '9:00');");    //
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '8:10', '8:20', '8:30', '8:35', '8:40', '8:50', '9:05');");
-        db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '8:20', '8:30', '8:35', '8:40', '8:45', '8:55', '9:10');");    //
+        db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '-', '-', '8:35', '8:40', '8:45', '8:55', '9:10');");    //
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '8:20', '8:30', '8:40', '8:45', '8:50', '9:00', '9:15');");
-        db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '8:25', '8:35', '8:45', '8:50', '8:55', '9:03', '9:18');");    //
+        db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '-', '-', '-', '-', '-', '9:03', '9:18');");    //
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '8:25', '8:35', '8:45', '8:50', '8:55', '9:05', '9:20');");
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '8:30', '8:40', '8:50', '8:55', '9:00', '9:10', '9:25');");
-        db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '8:40', '8:50', '8:55', '9:00', '9:05', '9:15', '9:30');");    //
+        db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '-', '-', '8:55', '9:00', '9:05', '9:15', '9:30');");    //
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '8:40', '8:50', '9:00', '9:05', '9:10', '9:20', '9:35');");
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '8:50', '9:00', '9:10', '9:15', '9:20', '9:30', '9:45');");
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '9:00', '9:10', '9:20', '9:25', '9:30', '9:40', '9:55');");
-        db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '9:10', '9:20', '9:25', '9:30', '9:35', '9:45', '10:00');");   //
+        db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '-', '-', '9:25', '9:30', '9:35', '9:45', '10:00');");   //
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '9:10', '9:20', '9:30', '9:35', '9:40', '9:50', '10:05');");
-        db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '9:20', '9:30', '9:40', '9:45', '9:50', '9:55', '10:10');");  //
+        db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '-', '-', '-', '-', '-', '9:55', '10:10');");  //
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '9:20', '9:30', '9:40', '9:45', '9:50', '10:00', '10:15');");
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '9:25', '9:35', '9:45', '9:50', '9:55', '10:05', '10:20');");
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '9:30', '9:40', '9:50', '9:55', '10:00', '10:10', '10:25');");

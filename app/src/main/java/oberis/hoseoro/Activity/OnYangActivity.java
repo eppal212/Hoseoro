@@ -25,8 +25,6 @@ public class OnYangActivity extends AppCompatActivity {
     final int table2_rowCount = 6;
     final int table3_rowCount = 3;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -31,6 +31,7 @@ public class TimetableActivity extends AppCompatActivity {
 
     int index = 0;
     int rowCount = 0;
+    int stationColumn = 0;
 
     String dbNameCcamToAcam;
     String dbNameAcamToCcam;
@@ -43,7 +44,7 @@ public class TimetableActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timetable);
 
         Intent intent = getIntent();
-        //String stationName = intent.getStringExtra("stationName");
+        String stationName = intent.getStringExtra("stationName");
         String destination = intent.getStringExtra("destination");
         boolean shuttleMode = intent.getBooleanExtra("shuttleMode", true);
         int whatDay = intent.getIntExtra("whatDay", 1);
@@ -63,7 +64,10 @@ public class TimetableActivity extends AppCompatActivity {
                         dbCcamToAcam = termCcamToAcamDB.getReadableDatabase();
                         dbAcamToCcam = termAcamToCcamDB.getReadableDatabase();
                     }
-                    rowCount = 84; // 맨 아래 데이터 출력 부분에서 쓸 변수 초기화 - 요일에 따라 행의 갯수가 달라짐
+                    if (destination.equals("천캠행"))
+                        rowCount = 76; // 맨 아래 데이터 출력 부분에서 쓸 변수 초기화 - 요일에 따라 행의 갯수가 달라짐
+                    else if (destination.equals("아캠행"))
+                        rowCount = 82;
                     break;
 
                 case 2:
@@ -107,9 +111,6 @@ public class TimetableActivity extends AppCompatActivity {
         TextView tableColumn6 = (TextView) findViewById((R.id.table_column6));
         TextView tableColumn7 = (TextView) findViewById((R.id.table_column7));
 
-        /*if (stationName.equals("천안캠퍼스") || stationName.equals("천안터미널 아캠행")
-                || stationName.equals("천안역 아캠행") || stationName.equals("충무병원 아캠행")
-                || stationName.equals("쌍용동 아캠행") || stationName.equals("천안아산역 아캠행")) {*/
         if (destination.equals("아캠행")) {
             table_Row.setText("천안캠퍼스 출발 > 아산캠퍼스 도착");
             tableColumn1.setText("천캠\n출발");
@@ -119,6 +120,22 @@ public class TimetableActivity extends AppCompatActivity {
             tableColumn5.setText("쌍용\n3동");
             tableColumn6.setText("KTX\n천안\n아산역");
             tableColumn7.setText("아캠\n도착");
+
+            // station 행 번호 초기화
+            if (stationName.equals(getString(R.string.tab_cCam)))
+                stationColumn = 0;
+            else if (stationName.equals(getString(R.string.tab_terminal)))
+                stationColumn = 1;
+            else if (stationName.equals(getString(R.string.tab_station)))
+                stationColumn = 2;
+            else if (stationName.equals(getString(R.string.tab_hospital)))
+                stationColumn = 3;
+            else if (stationName.equals(getString(R.string.tab_road)))
+                stationColumn = 4;
+            else if (stationName.equals(getString(R.string.tab_ktx)))
+                stationColumn = 5;
+            else if (stationName.equals(getString(R.string.tab_aCam)))
+                stationColumn = 6;
 
             //커서를 이용해 DB 접근
             Cursor cursor = dbCcamToAcam.rawQuery("SELECT * FROM " + dbNameCcamToAcam + ";", null);
@@ -135,11 +152,7 @@ public class TimetableActivity extends AppCompatActivity {
                     index++;
                 } while (cursor.moveToNext());
             }
-        }
-        /*else if (stationName.equals("아산캠퍼스") || stationName.equals("천안터미널 천캠행")
-                || stationName.equals("천안역 천캠행") || stationName.equals("충무병원 천캠행")
-                || stationName.equals("쌍용동 천캠행") || stationName.equals("천안아산역 천캠행")) {*/
-        else if (destination.equals("천캠행")) {
+        } else if (destination.equals("천캠행")) {
             table_Row.setText("아산캠퍼스 출발 > 천안캠퍼스 도착");
             tableColumn1.setText("아캠\n출발");
             tableColumn2.setText("KTX\n천안\n아산역");
@@ -148,6 +161,22 @@ public class TimetableActivity extends AppCompatActivity {
             tableColumn5.setText("천안역");
             tableColumn6.setText("천안\n터미널");
             tableColumn7.setText("천캠\n도착");
+
+            // station 행 번호 초기화
+            if (stationName.equals(getString(R.string.tab_aCam)))
+                stationColumn = 0;
+            else if (stationName.equals(getString(R.string.tab_ktx)))
+                stationColumn = 1;
+            else if (stationName.equals(getString(R.string.tab_road)))
+                stationColumn = 2;
+            else if (stationName.equals(getString(R.string.tab_hospital)))
+                stationColumn = 3;
+            else if (stationName.equals(getString(R.string.tab_station)))
+                stationColumn = 4;
+            else if (stationName.equals(getString(R.string.tab_terminal)))
+                stationColumn = 5;
+            else if (stationName.equals(getString(R.string.tab_cCam)))
+                stationColumn = 6;
 
             //커서를 이용해 DB 접근
             Cursor cursor = dbAcamToCcam.rawQuery("SELECT * FROM " + dbNameAcamToCcam + ";", null);
@@ -179,7 +208,11 @@ public class TimetableActivity extends AppCompatActivity {
 
                 text.setText(dbArray[i][j]);
                 text.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
-                text.setBackgroundColor(getResources().getColor(R.color.White));
+                // 현재 정류장에 배경색으로 표시
+                if (j == stationColumn )
+                    text.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                else
+                    text.setBackgroundColor(getResources().getColor(R.color.White));
                 text.setGravity(Gravity.CENTER);
 
                 tableRow.addView(text);

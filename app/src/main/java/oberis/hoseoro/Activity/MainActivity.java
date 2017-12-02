@@ -1,10 +1,14 @@
 package oberis.hoseoro.Activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -32,9 +36,13 @@ import oberis.hoseoro.SlidingTabView.SlidingTabsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    public final int MY_PERMISSION_REQUEST_STORAGE = 1; // 저장장치 읽기/쓰기 권한 확인용 변수
+
     boolean shuttleMode = true; // 학기중이냐 방학중이냐를 결정하는 모드. true가 학기중 / false가 방학중
     int whatDay = 1;    // 무슨 요일을 선택했느냐 하는 변수
     RadioGroup radioGroup;  // 평일 or 토요일 or 일요일 선택하는 라디오 그룹, onCreate에서 사용
+    public boolean doMakeFragment = true;  // MainActivity 갱신 유무를 결정하는 변수
+    public static Context mMainActivity;
 
     // 네이게이션 드로어 변수들
     private DrawerLayout mDrawerLayout;
@@ -53,10 +61,14 @@ public class MainActivity extends AppCompatActivity {
     public MainActivity() {
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mMainActivity = this;
+
+        checkPermission();  // 저장장치 사용권한 요청
 
         // 앱을 처음기동시 설정값들을 기본으로 적용해줌
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -70,9 +82,9 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false);
 
         // 앱이 처음 시작됐을 때 뷰페이저 부분을 그려주기 위함
-        if (savedInstanceState == null) {
+        /*if (savedInstanceState == null) {
             makeFragment(); // makeFragment 메소드가 뷰페이저를 그려주는 역할
-        }
+        }*/
 
 
         /**
@@ -151,6 +163,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (doMakeFragment) {
+            makeFragment();
+            doMakeFragment = false;
+        }
         InvalidateThread thread = new InvalidateThread();   // 새로고침 스레드
         thread.start();
         run = true;
@@ -265,13 +281,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this,MapActivity.class);
         startActivity(intent);
     }
-/*
-    // 전체 시간표보기 버튼 누름
-    public void onClickTimetable(View v) {
-        Intent intent = new Intent(MainActivity.this,TimetableActivity.class);
-        startActivity(intent);
-    }
-    */
 
     // 학기중 셔틀 버튼을 눌렀을 때
     private void setTermTimeMode() {
@@ -350,7 +359,34 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void checkPermission() {
+        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+                || checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) { // 거절된 경우
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    MY_PERMISSION_REQUEST_STORAGE); // 퍼미션 요청
+        } else {    // 승낙된 경우
+            return;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSION_REQUEST_STORAGE: {   // 외부 저장장치 권한요청 결과
+                // 요청이 취소되면 result 배열은 비어있음
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {  // 요청 승낙
+                    return;
+                } else {
+                    Toast.makeText(this, "앱 실행을 위해서는 관리권한을 설정해야 합니다.", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+        }
     }
 }
 

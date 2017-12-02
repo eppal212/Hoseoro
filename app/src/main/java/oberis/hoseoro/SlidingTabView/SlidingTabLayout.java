@@ -37,7 +37,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
     // 탭 레이아웃에 그려진 색상을 조정
     public interface TabColorizer {
         int getIndicatorColor(int position);
-        /*int getDividerColor(int position);*/
     }
 
     private static final int TITLE_OFFSET_DIPS = 24;
@@ -80,11 +79,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
     public void setSelectedIndicatorColors(int... colors) {
         mTabStrip.setSelectedIndicatorColors(colors);
     }
-
-    /*// 탭과 탭 사이의 구분선 일괄 설정
-    public void setDividerColors(int... colors) {
-        mTabStrip.setDividerColors(colors);
-    }*/
 
     // 뷰페이저가 전환될 때 발동되는 리스너
     public void setOnPageChangeListener(ViewPager.OnPageChangeListener listener) {

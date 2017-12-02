@@ -50,6 +50,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             int index = campusPreference.findIndexOfValue(value);
             campusPref.setSummary(index >= 0 ? campusPreference.getEntries()[index] : null);
             Toast.makeText(getActivity(), "캠퍼스 변경 완료", Toast.LENGTH_SHORT).show();
+            ((MainActivity)MainActivity.mMainActivity).doMakeFragment = true;
         } else if (preference == termPref) {   // 바뀐 프리퍼런스가 학기 설정 이라면
             ListPreference termPreference = (ListPreference) preference;
             String value = o.toString();
