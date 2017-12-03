@@ -11,9 +11,14 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            // 참고 : http://gun0912.tistory.com/33
+            resValue "string", "google_maps_api_key", "AIzaSyDkNDssxd8A0klWxZB4TPwuSCXEGvC8TZU" // 개발용 KEY
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue "string", "google_maps_api_key", "AIzaSyBZe57pLRTRzvfLvZxeYpz9ZxHq3qu4RCQ" // 배포용 KEY
         }
     }
 }

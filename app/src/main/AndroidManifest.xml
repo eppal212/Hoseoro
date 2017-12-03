@@ -17,10 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!-- 구글지도 키 -->
+        <!-- 구글지도 키 / build.gradle에 있음-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDkNDssxd8A0klWxZB4TPwuSCXEGvC8TZU" />
+            android:value="@string/google_maps_api_key" />
 
         <!-- 스플래시 이미지 -->
         <activity
