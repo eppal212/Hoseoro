@@ -1,14 +1,10 @@
 package oberis.hoseoro.Activity;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -16,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,17 +23,18 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.MobileAds;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import oberis.hoseoro.CustomDialog;
 import oberis.hoseoro.CustomDrawerAdapter;
 import oberis.hoseoro.DrawerItem;
 import oberis.hoseoro.R;
 import oberis.hoseoro.SlidingTabView.SlidingTabsFragment;
 
 public class MainActivity extends AppCompatActivity {
-
-    public final int MY_PERMISSION_REQUEST_STORAGE = 1; // 저장장치 읽기/쓰기 권한 확인용 변수
 
     boolean shuttleMode = true; // 학기중이냐 방학중이냐를 결정하는 모드. true가 학기중 / false가 방학중
     int whatDay = 1;    // 무슨 요일을 선택했느냐 하는 변수
@@ -61,17 +59,17 @@ public class MainActivity extends AppCompatActivity {
     public MainActivity() {
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mMainActivity = this;
 
-        checkPermission();  // 저장장치 사용권한 요청
-
         // 앱을 처음기동시 설정값들을 기본으로 적용해줌
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+        // 광고를 위해 파이어 베이스 연동
+        MobileAds.initialize(this, getString(R.string.app_id));
 
         backKeyPressedTime = System.currentTimeMillis();    // 백버튼 클릭 초기화
 
@@ -259,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        //1번째 백버튼 클릭
+        /*//1번째 백버튼 클릭
         if(System.currentTimeMillis()>backKeyPressedTime+2000){
             backKeyPressedTime = System.currentTimeMillis();
             Toast.makeText(this, "한 번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
@@ -269,18 +267,18 @@ public class MainActivity extends AppCompatActivity {
             finish();
             System.exit(0);
             android.os.Process.killProcess(android.os.Process.myPid());
-        }
+        }*/
+
+        new CustomDialog(this,
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        finish();
+                    }
+                }).show();
     }
     /**
      * 앱종료 파트 끝
      */
-
-
-    // 정류장 지도보기 버튼 누름
-    public void onClickMap(View v) {
-        Intent intent = new Intent(MainActivity.this,MapActivity.class);
-        startActivity(intent);
-    }
 
     // 학기중 셔틀 버튼을 눌렀을 때
     private void setTermTimeMode() {
@@ -356,34 +354,6 @@ public class MainActivity extends AppCompatActivity {
                     sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void checkPermission() {
-        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED
-                || checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) { // 거절된 경우
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    MY_PERMISSION_REQUEST_STORAGE); // 퍼미션 요청
-        } else {    // 승낙된 경우
-            return;
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSION_REQUEST_STORAGE: {   // 외부 저장장치 권한요청 결과
-                // 요청이 취소되면 result 배열은 비어있음
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {  // 요청 승낙
-                    return;
-                } else {
-                    Toast.makeText(this, "앱 실행을 위해서는 관리권한을 설정해야 합니다.", Toast.LENGTH_SHORT).show();
-                    finish();
                 }
             }
         }

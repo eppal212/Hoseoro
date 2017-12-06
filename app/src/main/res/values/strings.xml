@@ -22,6 +22,12 @@
     <string name="onyang_column5">배방역</string>
     <string name="onyang_column6">아캠\n도착</string>
 
+    <!-- 광고를 위한 문자열 -->
+    <string name="app_id">ca-app-pub-1197409946903481~2996154117</string>
+    <string name="banner_ad_unit_id">ca-app-pub-1197409946903481/6630069378</string>
+    <!-- 테스트용 -->
+    <!--<string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
+
     <!-- 설정창에서 쓰임 -->
     <string name="campusPref_key">campusPref_key</string>
     <string name="campusPref_title">캠퍼스 설정</string>

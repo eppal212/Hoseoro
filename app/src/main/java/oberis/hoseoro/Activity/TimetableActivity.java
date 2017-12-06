@@ -4,12 +4,18 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import oberis.hoseoro.Database.HolidayAcamToCcamDB;
 import oberis.hoseoro.Database.HolidayCcamToAcamDB;
@@ -32,6 +38,7 @@ public class TimetableActivity extends AppCompatActivity {
     int index = 0;
     int rowCount = 0;
     int stationColumn = 0;
+    boolean isCheck = true; // 하이라이트 시간을 한 번만 표시하기 위한 변수
 
     String dbNameCcamToAcam;
     String dbNameAcamToCcam;
@@ -198,6 +205,9 @@ public class TimetableActivity extends AppCompatActivity {
         // 데이터 출력
         final TableLayout tableLayout = (TableLayout) findViewById(R.id.table_main); // 테이블 id 명
 
+        // 하이라이트를 주기 위해 현재 시간을 계산
+        Date nowTime = calcNowTime();
+
         for (int i = 0; i < rowCount; i++) {
         // Creation row
             final TableRow tableRow = new TableRow(this);
@@ -208,16 +218,57 @@ public class TimetableActivity extends AppCompatActivity {
 
                 text.setText(dbArray[i][j]);
                 text.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+
                 // 현재 정류장에 배경색으로 표시
-                if (j == stationColumn )
+                if (j == stationColumn ) {
                     text.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                else
+
+                    // 특별히 바로 앞에 오는 시간표에 하이라이트 처리
+                    if (isCheck && !dbArray[i][j].equals("-"))
+                        isCheck = setHighlight(text, nowTime, dbArray[i][j]);
+
+                } else
                     text.setBackgroundColor(getResources().getColor(R.color.White));
+
                 text.setGravity(Gravity.CENTER);
 
                 tableRow.addView(text);
             }
             tableLayout.addView(tableRow);
         }
+    }
+
+    // 현재 시간을 계산하는 메소드
+    public Date calcNowTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");   // DateFormat
+        Date now = new Date(System.currentTimeMillis());    // 현재 시간 구함
+        String nowStr = dateFormat.format(now);
+        Date nowTime = null;
+        try {   nowTime = dateFormat.parse(nowStr); }
+        catch (ParseException e) {    e.printStackTrace();    }
+        return nowTime;
+    }
+
+    /**
+     * 바로 다음에 오는 시간에 하이라이트 처리를 하기 위한 메소드
+     * @param textView  // 처리할 텍스트뷰
+     * @param nowTime   // 현재 시간 (비교용)
+     * @param dbArrayTime   // DB의 시간
+     * @return  // 뒤쪽 시간표는 안 건들고 한 번만 처리하기 위해 boolean값을 반환
+     */
+    public boolean setHighlight(TextView textView, Date nowTime, String dbArrayTime) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");   // DateFormat
+
+        Date dbTime = null;     // db시간 구함
+        try {   dbTime = dateFormat.parse(dbArrayTime); }
+        catch (ParseException e) {  e.printStackTrace();    }
+
+        if (dbTime.after(nowTime)) {    // 표시할지 비교 ~ db시간이 더 늦어야 함
+            textView.setBackgroundColor(getResources().getColor(R.color.White));
+            textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+            textView.setTextColor(getResources().getColor(R.color.colorMain));
+            return false;
+        }
+        return true;
     }
 }
