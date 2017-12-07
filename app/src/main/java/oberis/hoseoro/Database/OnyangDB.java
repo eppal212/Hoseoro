@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class OnyangDB extends SQLiteOpenHelper {
     final static private String DB_NAME = "Onyang.db";
-    final static private int DB_VERSION = 1;
+    final static private int DB_VERSION = 10;
 
     public OnyangDB(Context context) {
         super(context, DB_NAME, null, DB_VERSION);

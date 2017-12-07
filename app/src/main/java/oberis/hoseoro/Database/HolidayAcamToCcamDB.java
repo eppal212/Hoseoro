@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class HolidayAcamToCcamDB extends SQLiteOpenHelper {
     final static private String DB_NAME = "HolidayAcamToCcam.db";
-    final static private int DB_VERSION = 2;
+    final static private int DB_VERSION = 10;
 
     public HolidayAcamToCcamDB(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -31,7 +31,7 @@ public class HolidayAcamToCcamDB extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO HolidayAcamToCcam VALUES (null, '12:00', '12:15', '12:20', '12:25', '12:35', '12:45', '12:55');");
         db.execSQL("INSERT INTO HolidayAcamToCcam VALUES (null, '13:00', '13:15', '13:20', '13:25', '13:35', '13:45', '13:55');");
         db.execSQL("INSERT INTO HolidayAcamToCcam VALUES (null, '13:30', '13:45', '13:50', '13:55', '14:05', '14:15', '14:25');");
-        db.execSQL("INSERT INTO HolidayAcamToCcam VALUES (null, '14:00', '14:15', '14:30', '14:25', '14:35', '14:45', '14:55');");
+        db.execSQL("INSERT INTO HolidayAcamToCcam VALUES (null, '14:00', '14:15', '14:20', '14:25', '14:35', '14:45', '14:55');");
         db.execSQL("INSERT INTO HolidayAcamToCcam VALUES (null, '14:30', '14:45', '14:50', '14:55', '15:05', '15:15', '15:25');");
         db.execSQL("INSERT INTO HolidayAcamToCcam VALUES (null, '15:00', '15:15', '15:20', '15:25', '15:35', '15:45', '15:55');");
         db.execSQL("INSERT INTO HolidayAcamToCcam VALUES (null, '15:30', '15:45', '15:50', '15:55', '16:05', '16:15', '16:25');");

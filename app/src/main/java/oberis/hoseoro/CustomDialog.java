@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -55,14 +54,6 @@ public class CustomDialog extends Dialog {
     private void setAds() {
 
         AdView adView = (AdView) findViewById(R.id.dialog_adView);
-
-        adView.setAdListener(new AdListener() {
-                                 @Override
-                                 public void onAdFailedToLoad(int i) {
-                                     super.onAdFailedToLoad(i);
-                                     Log.i("Tag", Integer.toString(i));
-                                 }
-                             });
 
         AdRequest adRequest = new AdRequest.Builder()
                 //.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)/*.addTestDevice("00271FE205DD4D8EF5307165794013EB")*/  //  테스트 라인

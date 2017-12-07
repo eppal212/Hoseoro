@@ -47,9 +47,11 @@
     <string name="termPref_summary">summary 초기화 오류</string>
     <string name="termPref_defaultValue">term</string>
 
+    <string name="privacyPref_key">privacyPref_key</string>
+
     <string name="ref_notice">
         * 학교 홈페이지에서 제공하는 시간표를 준수합니다.\n
-          별도의 특별운행은 표시되지 않습니다.\n
+        * 별도의 특별운행은 표시되지 않습니다.\n
         * 아이폰은 지원하지 않습니다.
     </string>
 

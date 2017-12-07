@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class TermCcamToAcamDB extends SQLiteOpenHelper{
     final static private String DB_NAME = "TermCcamToAcam.db";
-    final static private int DB_VERSION = 8;
+    final static private int DB_VERSION = 10;
 
     public TermCcamToAcamDB(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -25,7 +25,7 @@ public class TermCcamToAcamDB extends SQLiteOpenHelper{
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '7:45', '7:55', '8:05', '8:10', '8:15', '8:25', '8:40');");
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '-', '-', '8:15', '8:20', '8:25', '8:35', '8:50');");    //
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '8:00', '8:10', '8:20', '8:25', '8:30', '8:40', '8:55');");
-        db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '-', '-', '-', '-', '-', '8:43', '9:58');");    //
+        db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '-', '-', '-', '-', '-', '8:43', '8:58');");    //
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '-', '-', '8:25', '8:30', '8:35', '8:45', '9:00');");    //
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '8:10', '8:20', '8:30', '8:35', '8:40', '8:50', '9:05');");
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '-', '-', '8:35', '8:40', '8:45', '8:55', '9:10');");    //
@@ -91,7 +91,7 @@ public class TermCcamToAcamDB extends SQLiteOpenHelper{
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '18:20', '18:30', '18:40', '18:45', '18:50', '19:00', '19:15');");
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '18:30', '18:40', '18:50', '18:55', '19:00', '19:10', '19:25');");
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '18:40', '18:50', '19:00', '19:05', '19:10', '19:20', '19:35');");
-        db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '18:50', '19:00', '19:10', '19:25', '19:20', '19:30', '19:45');");
+        db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '18:50', '19:00', '19:10', '19:15', '19:20', '19:30', '19:45');");
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '19:00', '19:10', '19:20', '19:25', '19:30', '19:40', '19:55');");
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '19:15', '19:25', '19:35', '19:40', '19:45', '19:55', '20:10');");
         db.execSQL("INSERT INTO TermCcamToAcam VALUES (null, '19:30', '19:40', '19:50', '19:55', '20:00', '20:10', '20:25');");

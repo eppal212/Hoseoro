@@ -24,13 +24,20 @@
         android:icon="@drawable/ic_termpref" />
 
     <Preference
+        android:title="공지사항"
+        android:summary="@string/ref_notice"
+        android:icon="@drawable/ic_notice" />
+
+    <Preference
         android:title="개발자  컴퓨터공학과 11학번"
         android:summary="이메일  eppal1205@gmail.com"
         android:icon="@drawable/ic_developer" />
 
     <Preference
-        android:title="공지사항"
-        android:summary="@string/ref_notice"
-        android:icon="@drawable/ic_notice" />
+        android:key="privacyPref_key"
+        android:title="개인정보처리방침"
+        android:summary="눌러서 확인하기(링크)"
+        android:icon="@drawable/ic_developer"
+        />
 
 </PreferenceScreen>

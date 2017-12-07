@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class HolidayCcamToAcamDB extends SQLiteOpenHelper{
     final static private String DB_NAME = "HolidayCcamToAcam.db";
-    final static private int DB_VERSION = 2;
+    final static private int DB_VERSION = 10;
 
     public HolidayCcamToAcamDB(Context context) {
         super(context, DB_NAME, null, DB_VERSION);

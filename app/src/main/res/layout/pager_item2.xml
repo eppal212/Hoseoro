@@ -45,7 +45,7 @@
                     android:textSize="40dp"
                     android:textStyle="bold"
                     app:textStroke="true"
-                    app:textStrokeWidth="13.0"
+                    app:textStrokeWidth="11.5"
                     app:textStrokeColor="@color/colorMain"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -135,7 +135,7 @@
                     android:textSize="40dp"
                     android:textStyle="bold"
                     app:textStroke="true"
-                    app:textStrokeWidth="13.0"
+                    app:textStrokeWidth="11.5"
                     app:textStrokeColor="@color/colorMain"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 

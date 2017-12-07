@@ -334,9 +334,7 @@ public class ContentFragment extends Fragment {
                     if (timetext2 != null)  // null일때 : 천캠,아캠 페이지
                         timetext2.setText("분 남음");
                     break;
-                }
-
-                if (cursor.isLast()) {
+                } else if (cursor.isLast()) {
                     time.setText("운행종료");
                     timetext.setText(" ");
                     if (timetext2 != null)

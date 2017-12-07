@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class VacAcamToCcamDB extends SQLiteOpenHelper {
     final static private String DB_NAME = "VacAcamToCcam.db";
-    final static private int DB_VERSION = 1;
+    final static private int DB_VERSION = 10;
 
     public VacAcamToCcamDB(Context context) {
         super(context, DB_NAME, null, DB_VERSION);

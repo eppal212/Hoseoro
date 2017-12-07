@@ -1,9 +1,13 @@
 package oberis.hoseoro;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
+import android.text.util.Linkify;
 import android.widget.Toast;
 
 import oberis.hoseoro.Activity.MainActivity;
@@ -13,6 +17,7 @@ import oberis.hoseoro.Activity.MainActivity;
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener{
 
     ListPreference campusPref, termPref;    // 캠퍼스,학기 설정 프리퍼런스
+    Preference privacyPref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,6 +29,18 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         campusPref.setOnPreferenceChangeListener(this);   // 리스너 연결
         termPref = (ListPreference) findPreference(getString(R.string.termPref_key));
         termPref.setOnPreferenceChangeListener(this);   // 리스너 연결
+        privacyPref = (Preference) findPreference("privacyPref_key");
+        privacyPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {   // 하이퍼링크 리스터 연결
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                if (preference == privacyPref) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse("https://oberisblog.blogspot.kr/2017/12/blog-post.html"));
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
     }
 
     @Override
