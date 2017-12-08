@@ -218,7 +218,7 @@ public class ContentFragment extends Fragment {
             case 0: // 특별히 천안캠퍼스 정류장의 경우
                 busstation.setText(BusstationName);  // 프래그먼트 텍스트뷰 설정
                 destination.setText("아산캠퍼스행");
-                calcTime(dbCcamToAcam, dbNameCcamToAcam, Station, time, timetext, timetext2);    // 시간 계산해서 입력
+                calcTime(dbCcamToAcam, dbNameCcamToAcam, Station, time, timetext);    // 시간 계산해서 입력
 
                 // 정류장 지도 보기 버튼 리스너 처리
                 view.findViewById(R.id.item_where).setOnClickListener(
@@ -238,7 +238,7 @@ public class ContentFragment extends Fragment {
                 else
                     busstation.setText(BusstationName);
                 destination.setText("천안캠퍼스행");
-                calcTime(dbAcamToCcam, dbNameAcamToCcam, Station, time, timetext, timetext2);
+                calcTime(dbAcamToCcam, dbNameAcamToCcam, Station, time, timetext);
 
                 view.findViewById(R.id.item_where).setOnClickListener(
                         new Button.OnClickListener() {
@@ -257,7 +257,7 @@ public class ContentFragment extends Fragment {
                 else
                     busstation2.setText(BusstationName);
                 destination2.setText("아산캠퍼스행");
-                calcTime(dbCcamToAcam, dbNameCcamToAcam, Station, time2, timetext, timetext2);
+                calcTime(dbCcamToAcam, dbNameCcamToAcam, Station, time2, timetext2);
 
                 view.findViewById(R.id.item_where2).setOnClickListener(
                         new Button.OnClickListener() {
@@ -303,9 +303,8 @@ public class ContentFragment extends Fragment {
      * @param station   // 시간을 표시할 정류장
      * @param time  // 시간을 표시할 텍스트뷰
      * @param timetext  // "분 남음" 텍스트뷰 처리
-     * @param timetext2
      */
-    public void calcTime(SQLiteDatabase db, String tableName, String station, TextView time, TextView timetext, TextView timetext2) {
+    public void calcTime(SQLiteDatabase db, String tableName, String station, TextView time, TextView timetext) {
         //커서를 이용해 DB 접근
         Cursor cursor = db.rawQuery("SELECT " + station + " FROM " + tableName + ";", null);
         // DB 시간 계산
@@ -331,14 +330,10 @@ public class ContentFragment extends Fragment {
                     long temp = (dbTime.getTime() - nowTime.getTime()) / (60 * 1000);   // 계산
                     time.setText(String.valueOf(temp));
                     timetext.setText("분 남음");
-                    if (timetext2 != null)  // null일때 : 천캠,아캠 페이지
-                        timetext2.setText("분 남음");
                     break;
                 } else if (cursor.isLast()) {
                     time.setText("운행종료");
                     timetext.setText(" ");
-                    if (timetext2 != null)
-                        timetext2.setText(" ");
                     break;
                 }
             } while (cursor.moveToNext());

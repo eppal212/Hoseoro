@@ -264,9 +264,9 @@ public class TimetableActivity extends AppCompatActivity {
         catch (ParseException e) {  e.printStackTrace();    }
 
         if (dbTime.after(nowTime)) {    // 표시할지 비교 ~ db시간이 더 늦어야 함
-            textView.setBackgroundColor(getResources().getColor(R.color.White));
+            textView.setBackgroundColor(getResources().getColor(R.color.colorMain));
             textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
-            textView.setTextColor(getResources().getColor(R.color.colorMain));
+            textView.setTextColor(getResources().getColor(R.color.White));
             return false;
         }
         return true;

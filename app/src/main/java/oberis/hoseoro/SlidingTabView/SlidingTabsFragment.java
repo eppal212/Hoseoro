@@ -84,15 +84,7 @@ public class SlidingTabsFragment extends Fragment {
         int whatDay = getArguments().getInt("whatDay");
 
         String campusPref_value = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(getString(R.string.campusPref_key), "");
-        if (campusPref_value.equals("cCam")) {
-            mTabs.add(new PagerItem(getString(R.string.tab_cCam), shuttleMode, whatDay));
-            mTabs.add(new PagerItem(getString(R.string.tab_terminal), shuttleMode, whatDay));
-            mTabs.add(new PagerItem(getString(R.string.tab_station), shuttleMode, whatDay));
-            mTabs.add(new PagerItem(getString(R.string.tab_hospital), shuttleMode, whatDay));
-            mTabs.add(new PagerItem(getString(R.string.tab_road), shuttleMode, whatDay));
-            mTabs.add(new PagerItem(getString(R.string.tab_ktx), shuttleMode, whatDay));
-            mTabs.add(new PagerItem(getString(R.string.tab_aCam), shuttleMode, whatDay));
-        } else if (campusPref_value.equals("aCam")) {
+        if (campusPref_value.equals("aCam")) {
             mTabs.add(new PagerItem(getString(R.string.tab_aCam), shuttleMode, whatDay));
             mTabs.add(new PagerItem(getString(R.string.tab_ktx), shuttleMode, whatDay));
             mTabs.add(new PagerItem(getString(R.string.tab_road), shuttleMode, whatDay));
@@ -100,6 +92,14 @@ public class SlidingTabsFragment extends Fragment {
             mTabs.add(new PagerItem(getString(R.string.tab_station), shuttleMode, whatDay));
             mTabs.add(new PagerItem(getString(R.string.tab_terminal), shuttleMode, whatDay));
             mTabs.add(new PagerItem(getString(R.string.tab_cCam), shuttleMode, whatDay));
+        } else if (campusPref_value.equals("cCam")) {
+            mTabs.add(new PagerItem(getString(R.string.tab_cCam), shuttleMode, whatDay));
+            mTabs.add(new PagerItem(getString(R.string.tab_terminal), shuttleMode, whatDay));
+            mTabs.add(new PagerItem(getString(R.string.tab_station), shuttleMode, whatDay));
+            mTabs.add(new PagerItem(getString(R.string.tab_hospital), shuttleMode, whatDay));
+            mTabs.add(new PagerItem(getString(R.string.tab_road), shuttleMode, whatDay));
+            mTabs.add(new PagerItem(getString(R.string.tab_ktx), shuttleMode, whatDay));
+            mTabs.add(new PagerItem(getString(R.string.tab_aCam), shuttleMode, whatDay));
         }
     }
 

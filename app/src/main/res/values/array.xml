@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="campusPref_entries">
-    <item>천안캠퍼스 -> 아산캠퍼스</item>
-    <item>아산캠퍼스 -> 천안캠퍼스</item>
+        <item>아산캠퍼스 -> 천안캠퍼스</item>
+        <item>천안캠퍼스 -> 아산캠퍼스</item>
     </string-array>
 
     <string-array name="campusPref_values">
-        <item>cCam</item>
         <item>aCam</item>
+        <item>cCam</item>
     </string-array>
 
     <string-array name="termPref_entries">
