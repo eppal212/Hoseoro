@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class OnyangDB extends SQLiteOpenHelper {
     final static private String DB_NAME = "Onyang.db";
-    final static private int DB_VERSION = 10;
+    final static private int DB_VERSION = 11;
 
     public OnyangDB(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -41,6 +41,13 @@ public class OnyangDB extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO Onyang VALUES (null, '8:30', '8:45', '8:52', '9:05', '9:15', '9:25');");
         db.execSQL("INSERT INTO Onyang VALUES (null, '12:00', '12:15', '12:22', '12:35', '12:45', '12:55');");
         db.execSQL("INSERT INTO Onyang VALUES (null, '17:10', '17:25', '17:32', '17:45', '17:55', '18:05');");
+        // 특별 시간표
+        db.execSQL("INSERT INTO Onyang VALUES (null, '8:30', '8:45', '8:52', '9:05', '9:15', '9:25');");
+        db.execSQL("INSERT INTO Onyang VALUES (null, '10:30', '10:45', '10:52', '11:05', '11:15', '11:25');");
+        db.execSQL("INSERT INTO Onyang VALUES (null, '12:00', '12:15', '12:22', '12:35', '12:45', '12:55');");
+        db.execSQL("INSERT INTO Onyang VALUES (null, '13:30', '13:45', '13:52', '14:05', '14:15', '14:25');");
+        db.execSQL("INSERT INTO Onyang VALUES (null, '16:30', '16:45', '16:52', '17:05', '17:15', '17:25');");
+        db.execSQL("INSERT INTO Onyang VALUES (null, '18:00', '18:15', '18:22', '18:35', '18:45', '18:55');");
     }
 
     @Override

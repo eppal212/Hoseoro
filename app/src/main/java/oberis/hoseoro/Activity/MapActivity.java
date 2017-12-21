@@ -2,6 +2,7 @@ package oberis.hoseoro.Activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -51,12 +52,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     }
 
     // getMapAsync()의 콜백 메소드에서 마커 설정
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    /*@TargetApi(Build.VERSION_CODES.M)*/
     @Override
     public void onMapReady(final GoogleMap map) {
         this.map = map;
 
-        checkPermission();  // 퍼미션 요청
+        // 마시멜로 버전 이상이면 퍼미션 확인하고 그 이하면 바로 '내 위치' 표시
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            checkPermission();  // 퍼미션 요청
+        else
+            map.setMyLocationEnabled(true);
 
         LatLng STATION = null;
         MarkerOptions markerOptions = new MarkerOptions();
@@ -130,7 +135,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    @TargetApi(Build.VERSION_CODES.M)
     private void checkPermission() {
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_REQUEST_GOOGLEMAP);

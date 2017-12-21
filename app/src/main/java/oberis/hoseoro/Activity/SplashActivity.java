@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -15,15 +14,26 @@ public class SplashActivity extends Activity {
 
     public final int MY_PERMISSION_REQUEST_STORAGE = 1; // 저장장치 읽기/쓰기 권한 확인용 변수
 
-    @TargetApi(Build.VERSION_CODES.M)
+    /*@TargetApi(Build.VERSION_CODES.M)*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        checkPermission();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) // 디바이스 버전이 마시멜로 이상인 경우
+            checkPermission();
+        else {  // 마시멜로 이하 버전이면 퍼미션 검사 안 함
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            startActivity(new Intent(this, MainActivity.class));    // 메인액티비티 이동
+            finish();
+        }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
+    @TargetApi(Build.VERSION_CODES.M)
     private void checkPermission() {
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED

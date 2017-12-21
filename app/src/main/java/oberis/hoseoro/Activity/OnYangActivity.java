@@ -24,6 +24,7 @@ public class OnYangActivity extends AppCompatActivity {
     final int table1_rowCount = 8;  // 각 시간표마다 운행(줄)수
     final int table2_rowCount = 6;
     final int table3_rowCount = 3;
+    final int table4_rowCount = 6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +40,18 @@ public class OnYangActivity extends AppCompatActivity {
             dbOnyang = onyangDB.getReadableDatabase();
         }
 
-        dbArray = new String[table1_rowCount+table2_rowCount+table3_rowCount][6];  // 배열 초기화
+        dbArray = new String[table1_rowCount+table2_rowCount+table3_rowCount+table4_rowCount][6];  // 배열 초기화
 
         // 표 제목 적어주기
         TextView table1_Row = (TextView) findViewById(R.id.onyang_table1_row);
         TextView table2_Row = (TextView) findViewById(R.id.onyang_table2_row);
         TextView table3_Row = (TextView) findViewById(R.id.onyang_table3_row);
+        TextView table4_Row = (TextView) findViewById(R.id.onyang_table4_row);
         table1_Row.setText("학기중 평일 온양순환");
         table2_Row.setText("학기중 주말 온양순환");
         table3_Row.setText("방학중 온양순환");
+        table3_Row.setText("방학중 온양순환");
+        table4_Row.setText("보강 및 계절학기 온양순환");
 
         //커서를 이용해 DB 접근 - 배열에 DB의 모든 데이터 입력
         Cursor cursor = dbOnyang.rawQuery("SELECT * FROM " + dbNameOnyang + ";", null);
@@ -67,11 +71,13 @@ public class OnYangActivity extends AppCompatActivity {
         final TableLayout tableLayout1 = (TableLayout) findViewById(R.id.onyang_table1); // 테이블 id 명
         final TableLayout tableLayout2 = (TableLayout) findViewById(R.id.onyang_table2); // 테이블 id 명
         final TableLayout tableLayout3 = (TableLayout) findViewById(R.id.onyang_table3); // 테이블 id 명
+        final TableLayout tableLayout4 = (TableLayout) findViewById(R.id.onyang_table4); // 테이블 id 명
 
         // 표 출력
         addTableRow(tableLayout1, 0, table1_rowCount, dbArray);
         addTableRow(tableLayout2, table1_rowCount, table1_rowCount+table2_rowCount, dbArray);
         addTableRow(tableLayout3, table1_rowCount+table2_rowCount, table1_rowCount+table2_rowCount+table3_rowCount, dbArray);
+        addTableRow(tableLayout4, table1_rowCount+table2_rowCount+table3_rowCount, table1_rowCount+table2_rowCount+table3_rowCount+table4_rowCount, dbArray);
     }
 
     /**

@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
         import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -22,6 +25,8 @@ import oberis.hoseoro.Activity.MapActivity;
 import oberis.hoseoro.Activity.TimetableActivity;
 import oberis.hoseoro.Database.HolidayAcamToCcamDB;
 import oberis.hoseoro.Database.HolidayCcamToAcamDB;
+import oberis.hoseoro.Database.SpecialAcamToCcamDB;
+import oberis.hoseoro.Database.SpecialCcamToAcamDB;
 import oberis.hoseoro.Database.TermAcamToCcamDB;
 import oberis.hoseoro.Database.TermCcamToAcamDB;
 import oberis.hoseoro.Database.VacAcamToCcamDB;
@@ -35,11 +40,14 @@ public class ContentFragment extends Fragment {
     private static final String KEY_INDICATOR_COLOR = "indicator_color";
     /*private static final String KEY_DIVIDER_COLOR = "divider_color";*/
 
-    Boolean shuttleMode;
+    int shuttleMode;
     int whatDay;
     String BusstationName;
     String dbNameCcamToAcam, dbNameAcamToCcam;
 
+    // DB 변수들
+    SpecialCcamToAcamDB specialCcamToAcamDB;
+    SpecialAcamToCcamDB specialAcamToCcamDB;
     TermCcamToAcamDB termCcamToAcamDB;
     TermAcamToCcamDB termAcamToCcamDB;
     VacCcamToAcamDB vacCcamToAcamDB;
@@ -48,12 +56,14 @@ public class ContentFragment extends Fragment {
     HolidayAcamToCcamDB holidayAcamToCcamDB;
     SQLiteDatabase dbCcamToAcam, dbAcamToCcam;
 
+    RelativeLayout layout, layout2; // 정류장 배경을 그려주기 위한 레이아웃. onDestroy()에서 호출하기 위해 전역으로 설정
+
     // 새로운 프래그먼트를 만들어서 반환하는 메소드
-    public static ContentFragment newInstance(CharSequence title, int indicatorColor, boolean shuttleMode, int whatDay) {
+    public static ContentFragment newInstance(CharSequence title, int indicatorColor, int shuttleMode, int whatDay) {
         Bundle bundle = new Bundle();
         bundle.putCharSequence(KEY_TITLE, title);
         bundle.putInt(KEY_INDICATOR_COLOR, indicatorColor);
-        bundle.putBoolean("shuttleMode", shuttleMode);
+        bundle.putInt("shuttleMode", shuttleMode);
         bundle.putInt("whatDay", whatDay);
 
         ContentFragment fragment = new ContentFragment();
@@ -63,13 +73,26 @@ public class ContentFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        shuttleMode = getArguments().getBoolean("shuttleMode");
-        whatDay = getArguments().getInt("whatDay");
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // 정류장 정보가 나타날 레이아웃 인플레이트
+        Bundle args = getArguments();
+        if(args.getCharSequence(KEY_TITLE).equals("천안캠퍼스") ||
+                args.getCharSequence(KEY_TITLE).equals("아산캠퍼스")) {
+            return inflater.inflate(R.layout.pager_item, container, false);
+        } else
+            return inflater.inflate(R.layout.pager_item2, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        Bundle args = getArguments();   // makeFragment()시 넘겨받은 데이터들이 있는 번들객체
+        shuttleMode = args.getInt("shuttleMode");
+        whatDay = args.getInt("whatDay");
 
         // DB관련 작업
-        if (shuttleMode == true) {  // 학기중일 때
+        if (shuttleMode == 1) {  // 학기중일 때
             termCcamToAcamDB = new TermCcamToAcamDB(getActivity());
             termAcamToCcamDB = new TermAcamToCcamDB(getActivity());
             holidayCcamToAcamDB = new HolidayCcamToAcamDB(getActivity());
@@ -97,7 +120,7 @@ public class ContentFragment extends Fragment {
                 dbNameCcamToAcam = "HolidayCcamToAcam";
                 dbNameAcamToCcam = "HolidayAcamToCcam";
             }
-        } else {    // 방학중일 때
+        } else if (shuttleMode == 2){    // 방학중일 때
             vacCcamToAcamDB = new VacCcamToAcamDB(getActivity());
             vacAcamToCcamDB = new VacAcamToCcamDB(getActivity());
 
@@ -110,43 +133,49 @@ public class ContentFragment extends Fragment {
             }
             dbNameCcamToAcam = "VacCcamToAcam";
             dbNameAcamToCcam = "VacAcamToCcam";
+        } else if (shuttleMode == 3) {  // 오늘이 특별한 날이면
+            specialCcamToAcamDB = new SpecialCcamToAcamDB(getActivity());
+            specialAcamToCcamDB = new SpecialAcamToCcamDB(getActivity());
+
+            try {
+                dbCcamToAcam = specialCcamToAcamDB.getWritableDatabase();
+                dbAcamToCcam = specialAcamToCcamDB.getWritableDatabase();
+            } catch (SQLException ex) {
+                dbCcamToAcam = specialCcamToAcamDB.getReadableDatabase();
+                dbAcamToCcam = specialAcamToCcamDB.getReadableDatabase();
+            }
+            dbNameCcamToAcam = "SpecialCcamToAcam";
+            dbNameAcamToCcam = "SpecialAcamToCcam";
+
         }
 
-        Bundle args = getArguments();
-        if(args.getCharSequence(KEY_TITLE).equals("천안캠퍼스") ||
-                args.getCharSequence(KEY_TITLE).equals("아산캠퍼스")) {
-            return inflater.inflate(R.layout.pager_item, container, false);
-        } else
-            return inflater.inflate(R.layout.pager_item2, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.fragment_layout);
-        RelativeLayout layout2 = (RelativeLayout) view.findViewById(R.id.fragment_layout2);
-
-        Bundle args = getArguments();
+        /*RelativeLayout */layout = (RelativeLayout) view.findViewById(R.id.fragment_layout);
+        /*RelativeLayout */layout2 = (RelativeLayout) view.findViewById(R.id.fragment_layout2);
         BusstationName = args.getCharSequence(KEY_TITLE).toString();
 
+        // 실질적으로 정류장 정보들을 그려주는 부분
         if (args != null) {
             if(BusstationName.equals("천안캠퍼스")) {
-                layout.setBackgroundResource(R.drawable.bg_ccam);   // 배경이미지 설정
+                /*layout.setBackgroundResource(R.drawable.bg_ccam);*/   // 배경이미지 설정
+                layout.setBackground(new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), R.drawable.bg_ccam))); // 메모리 절약을 위해 이렇게 배경 설정
 
                 setStationFragment(view, "cCam", 0);    // 프래그먼트의 뷰들 처리
 
                 view.findViewById(R.id.item_timetable).setOnClickListener(onClickListener_TimetableToAcam); // 시간표 버튼 이벤트 처리
 
             } else if(BusstationName.equals("아산캠퍼스")) {
-                layout.setBackgroundResource(R.drawable.bg_acam);
+                /*layout.setBackgroundResource(R.drawable.bg_acam);*/
+                layout.setBackground(new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), R.drawable.bg_acam)));
 
                 setStationFragment(view, "aCam", 1);
 
                 view.findViewById(R.id.item_timetable).setOnClickListener(onClickListener_TimetableToCcam);
 
             } else if(BusstationName.equals("천안터미널")) {
-                layout.setBackgroundResource(R.drawable.bg_terminal1);
-                layout2.setBackgroundResource(R.drawable.bg_terminal2);
+                /*layout.setBackgroundResource(R.drawable.bg_terminal1);
+                layout2.setBackgroundResource(R.drawable.bg_terminal2);*/
+                layout.setBackground(new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), R.drawable.bg_terminal1)));
+                layout2.setBackground(new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), R.drawable.bg_terminal2)));
 
                 setStationFragment(view, "terminal", 1);
                 setStationFragment(view, "terminal", 2);
@@ -155,8 +184,10 @@ public class ContentFragment extends Fragment {
                 view.findViewById(R.id.item_timetable2).setOnClickListener(onClickListener_TimetableToAcam);
 
             } else if(BusstationName.equals("천안역")) {
-                layout.setBackgroundResource(R.drawable.bg_station1);
-                layout2.setBackgroundResource(R.drawable.bg_station2);
+                /*layout.setBackgroundResource(R.drawable.bg_station1);
+                layout2.setBackgroundResource(R.drawable.bg_station2);*/
+                layout.setBackground(new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), R.drawable.bg_station1)));
+                layout2.setBackground(new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), R.drawable.bg_station2)));
 
                 setStationFragment(view, "station",1);
                 setStationFragment(view, "station",2);
@@ -165,8 +196,10 @@ public class ContentFragment extends Fragment {
                 view.findViewById(R.id.item_timetable2).setOnClickListener(onClickListener_TimetableToAcam);
 
             } else if(BusstationName.equals("충무병원")) {
-                layout.setBackgroundResource(R.drawable.bg_hospital1);
-                layout2.setBackgroundResource(R.drawable.bg_hospital2);
+                /*layout.setBackgroundResource(R.drawable.bg_hospital1);
+                layout2.setBackgroundResource(R.drawable.bg_hospital2);*/
+                layout.setBackground(new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), R.drawable.bg_hospital1)));
+                layout2.setBackground(new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), R.drawable.bg_hospital2)));
 
                 setStationFragment(view, "hospital",1);
                 setStationFragment(view, "hospital",2);
@@ -175,8 +208,10 @@ public class ContentFragment extends Fragment {
                 view.findViewById(R.id.item_timetable2).setOnClickListener(onClickListener_TimetableToAcam);
 
             } else if(BusstationName.equals("쌍용동")) {
-                layout.setBackgroundResource(R.drawable.bg_road1);
-                layout2.setBackgroundResource(R.drawable.bg_road2);
+                /*layout.setBackgroundResource(R.drawable.bg_road1);
+                layout2.setBackgroundResource(R.drawable.bg_road2);*/
+                layout.setBackground(new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), R.drawable.bg_road1)));
+                layout2.setBackground(new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), R.drawable.bg_road2)));
 
                 setStationFragment(view, "road",1);
                 setStationFragment(view, "road",2);
@@ -185,14 +220,47 @@ public class ContentFragment extends Fragment {
                 view.findViewById(R.id.item_timetable2).setOnClickListener(onClickListener_TimetableToAcam);
 
             } else if(BusstationName.equals("천안아산역")) {
-                layout.setBackgroundResource(R.drawable.bg_ktx1);
-                layout2.setBackgroundResource(R.drawable.bg_ktx2);
+                /*layout.setBackgroundResource(R.drawable.bg_ktx1);
+                layout2.setBackgroundResource(R.drawable.bg_ktx2);*/
+                layout.setBackground(new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), R.drawable.bg_ktx1)));
+                layout2.setBackground(new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), R.drawable.bg_ktx2)));
 
                 setStationFragment(view, "ktx",1);
                 setStationFragment(view, "ktx",2);
 
                 view.findViewById(R.id.item_timetable).setOnClickListener(onClickListener_TimetableToCcam);
                 view.findViewById(R.id.item_timetable2).setOnClickListener(onClickListener_TimetableToAcam);
+            }
+        }
+
+        // DB작업 종료
+        dbCcamToAcam.close();
+        dbAcamToCcam.close();
+    }
+
+    // 프래그먼트가 사라질때 배경이미지 메모리 해제
+    @Override
+    public void onDestroyView() {
+        Log.i("Tag", "프래그먼트 onDestroyView()");
+        if (layout != null)
+            recycleView(layout);
+        if (layout2 != null)
+            recycleView(layout2);
+        super.onDestroyView();
+    }
+
+    /**
+     * 메모리 절약을 위해 배경 이미지를 recycle() 해주는 메소드
+     * @param view  // 배경이 그려지는 레이아웃
+     */
+    private void recycleView(View view) {
+        if(view != null) {
+            Drawable bg = view.getBackground();
+            if(bg != null) {
+                bg.setCallback(null);
+                ((BitmapDrawable)bg).getBitmap().recycle();
+                Log.i("Tag", "배경 이미지 리사이클");
+                view.setBackground(null);
             }
         }
     }
@@ -338,6 +406,22 @@ public class ContentFragment extends Fragment {
                 }
             } while (cursor.moveToNext());
         }
+        cursor.close();
     }
+/*
+    *//**
+     * 오늘이 특정한 날인지 검사하는 메소드
+     * @return
+     *//*
+    static public boolean checkDate() {
+        // 오늘 날짜 구함
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yy.MM.dd");
+        String nowDay = dateFormat.format(new Date(System.currentTimeMillis()));
 
+        if (nowDay.equals("18.01.11") || nowDay.equals("18.02.26") || nowDay.equals("18.02.27")
+            || nowDay.equals("18.02.28") || nowDay.equals("18.03.01") || nowDay.equals("17.12.21")) {
+            return true;
+        } else
+            return false;
+    }*/
 }

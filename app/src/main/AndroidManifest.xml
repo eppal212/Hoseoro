@@ -12,6 +12,7 @@
     <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <!-- 정 메모리 없으면 largeHeap="true" 옵션 사용 -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,9 +22,13 @@
         android:theme="@style/AppTheme">
 
         <!-- 구글지도 키 / build.gradle에 있음-->
+        <!--<meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_api_key" />-->
+        <!-- 플레이 스토어 앱서명 키로 수정 -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_api_key" />
+            android:value="AIzaSyDV4GANiatvvSLXKxW8sN87G67BR76KFXY" />
 
         <meta-data
             android:name="com.google.android.gms.version"

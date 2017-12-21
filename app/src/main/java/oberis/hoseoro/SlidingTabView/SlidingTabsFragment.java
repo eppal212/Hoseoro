@@ -40,11 +40,11 @@ public class SlidingTabsFragment extends Fragment {
     static class PagerItem {
         private final CharSequence mTitle;  // 이름
         private final int mIndicatorColor = Color.parseColor("#1E88E5"); // 선택됐을 때 색깔 : R.color.colorMain
-        boolean shuttleMode;    // 학기중/방학중
+        int shuttleMode;    // 학기중/방학중
         int whatDay;    // 평일/토/일
 
         // 생성자
-        PagerItem(CharSequence title, boolean shuttleMode, int whatDay) {
+        PagerItem(CharSequence title, int shuttleMode, int whatDay) {
             mTitle = title;
             this.shuttleMode = shuttleMode;
             this.whatDay = whatDay;
@@ -80,7 +80,7 @@ public class SlidingTabsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // MainActivity에서 Bundle 객체로 값을 줬기 때문에
-        Boolean shuttleMode = getArguments().getBoolean("shuttleMode");
+        int shuttleMode = getArguments().getInt("shuttleMode");
         int whatDay = getArguments().getInt("whatDay");
 
         String campusPref_value = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(getString(R.string.campusPref_key), "");

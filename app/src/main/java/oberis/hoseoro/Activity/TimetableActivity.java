@@ -19,6 +19,8 @@ import java.util.Date;
 
 import oberis.hoseoro.Database.HolidayAcamToCcamDB;
 import oberis.hoseoro.Database.HolidayCcamToAcamDB;
+import oberis.hoseoro.Database.SpecialAcamToCcamDB;
+import oberis.hoseoro.Database.SpecialCcamToAcamDB;
 import oberis.hoseoro.Database.TermAcamToCcamDB;
 import oberis.hoseoro.Database.TermCcamToAcamDB;
 import oberis.hoseoro.Database.VacAcamToCcamDB;
@@ -27,6 +29,8 @@ import oberis.hoseoro.R;
 
 public class TimetableActivity extends AppCompatActivity {
 
+    SpecialCcamToAcamDB specialCcamToAcamDB;
+    SpecialAcamToCcamDB specialAcamToCcamDB;
     TermCcamToAcamDB termCcamToAcamDB;
     TermAcamToCcamDB termAcamToCcamDB;
     VacCcamToAcamDB vacCcamToAcamDB;
@@ -53,11 +57,11 @@ public class TimetableActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String stationName = intent.getStringExtra("stationName");
         String destination = intent.getStringExtra("destination");
-        boolean shuttleMode = intent.getBooleanExtra("shuttleMode", true);
+        int shuttleMode = intent.getIntExtra("shuttleMode", 1);
         int whatDay = intent.getIntExtra("whatDay", 1);
 
         // DB관련 작업
-        if (shuttleMode == true) {  // 학기중일 때
+        if (shuttleMode == 1) {  // 학기중일 때
             switch (whatDay) {
                 case 1:
                     termCcamToAcamDB = new TermCcamToAcamDB(this);
@@ -92,7 +96,7 @@ public class TimetableActivity extends AppCompatActivity {
                     rowCount = 24;
                     break;
             }
-        } else {    // 방학줄일 때
+        } else if (shuttleMode == 2){    // 방학중일 때
             vacCcamToAcamDB = new VacCcamToAcamDB(this);
             vacAcamToCcamDB = new VacAcamToCcamDB(this);
             try {
@@ -105,8 +109,21 @@ public class TimetableActivity extends AppCompatActivity {
                 dbAcamToCcam = vacAcamToCcamDB.getReadableDatabase();
             }
             rowCount = 14;
+        } if (shuttleMode == 3) {  // 오늘이 특별한 날이면
+            specialCcamToAcamDB = new SpecialCcamToAcamDB(this);
+            specialAcamToCcamDB = new SpecialAcamToCcamDB(this);
+            try {
+                dbCcamToAcam = specialCcamToAcamDB.getWritableDatabase();
+                dbAcamToCcam = specialAcamToCcamDB.getWritableDatabase();
+            } catch (SQLException ex) {
+                dbCcamToAcam = specialCcamToAcamDB.getReadableDatabase();
+                dbAcamToCcam = specialAcamToCcamDB.getReadableDatabase();
+            }
+            dbNameCcamToAcam = "SpecialCcamToAcam";
+            dbNameAcamToCcam = "SpecialAcamToCcam";
+            rowCount = 32;
         }
-        dbArray = new String[rowCount][7];  // 배열 초기화
+            dbArray = new String[rowCount][7];  // 배열 초기화
 
 
         TextView table_Row = (TextView) findViewById(R.id.table_row);
@@ -200,6 +217,7 @@ public class TimetableActivity extends AppCompatActivity {
                     index++;
                 } while (cursor.moveToNext());
             }
+            cursor.close();
         }
 
         // 데이터 출력
@@ -236,6 +254,9 @@ public class TimetableActivity extends AppCompatActivity {
             }
             tableLayout.addView(tableRow);
         }
+        // DB작업 종료
+        dbCcamToAcam.close();
+        dbAcamToCcam.close();
     }
 
     // 현재 시간을 계산하는 메소드

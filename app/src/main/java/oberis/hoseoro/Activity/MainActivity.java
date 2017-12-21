@@ -36,7 +36,7 @@ import oberis.hoseoro.SlidingTabView.SlidingTabsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    boolean shuttleMode = true; // 학기중이냐 방학중이냐를 결정하는 모드. true가 학기중 / false가 방학중
+    int shuttleMode = 1; // 학기중이냐 방학중이냐를 결정하는 모드. 1이 학기중 / 2가 방학중
     int whatDay = 1;    // 무슨 요일을 선택했느냐 하는 변수
     RadioGroup radioGroup;  // 평일 or 토요일 or 일요일 선택하는 라디오 그룹, onCreate에서 사용
     public boolean doMakeFragment = true;  // MainActivity 갱신 유무를 결정하는 변수
@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
         // 앱을 처음기동시 설정값들을 기본으로 적용해줌
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        // 광고를 위해 파이어 베이스 연동
-        MobileAds.initialize(this, getString(R.string.app_id));
+        /*// 광고를 위해 파이어 베이스 연동
+        MobileAds.initialize(this, getString(R.string.app_id));*/
 
         backKeyPressedTime = System.currentTimeMillis();    // 백버튼 클릭 초기화
 
@@ -116,7 +116,8 @@ public class MainActivity extends AppCompatActivity {
         dataList = new ArrayList<DrawerItem>();
         dataList.add(new DrawerItem(" 학기중 셔틀버스", R.drawable.ic_term));
         dataList.add(new DrawerItem(" 방학중 셔틀버스", R.drawable.ic_vacation));
-        dataList.add(new DrawerItem(" 온양순환(학기/방학중)", R.drawable.ic_onyang));
+        dataList.add(new DrawerItem(" 보강 및 계절학기\n (1.11 / 2.26 ~ 3.1)", R.drawable.ic_vacation));
+        dataList.add(new DrawerItem(" 온양순환\n (학기/방학/계절학기)", R.drawable.ic_onyang));
         dataList.add(new DrawerItem(" 설정", R.drawable.ic_settings));
 
         // 리스트뷰에 어댑터 연결
@@ -200,12 +201,17 @@ public class MainActivity extends AppCompatActivity {
                 curPosition = possition;
                 mDrawerList.setItemChecked(possition, true);
                 break;
-            case 2: // 온양순환 선택
+            case 2: // 특별 시간표 선택
+                setSpecialMode();
+                curPosition = possition;
+                mDrawerList.setItemChecked(possition, true);
+                break;
+            case 3: // 온양순환 선택
                 mDrawerList.setItemChecked(curPosition, true);
                 startActivity(new Intent(MainActivity.this,OnYangActivity.class));
                 //finish();
                 break;
-            case 3: // 설정 선택
+            case 4: // 설정 선택
                 mDrawerList.setItemChecked(curPosition, true);
                 startActivity(new Intent(MainActivity.this,SettingsActivity.class));
                 break;
@@ -282,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
 
     // 학기중 셔틀 버튼을 눌렀을 때
     private void setTermTimeMode() {
-        shuttleMode = true;
+        shuttleMode = 1;
         ImageView imageview = (ImageView)findViewById(R.id.title_image);
         imageview.setImageResource(R.drawable.ic_title1);   // 제목 부분 바꾸기
 
@@ -293,9 +299,25 @@ public class MainActivity extends AppCompatActivity {
     }
     // 방학중 셔틀 버튼을 눌렀을 때
     private void setVacationMode() {
-        shuttleMode = false;
+        shuttleMode = 2;
         ImageView imageview = (ImageView)findViewById(R.id.title_image);
         imageview.setImageResource(R.drawable.ic_title2);
+
+        // 평일 버튼이 자동으로 눌리도록
+        radioGroup.check(R.id.button1);
+        whatDay = 1;
+
+        // 토/일/공휴일 버튼 못누르게
+        RadioButton holidayRadioButton = (RadioButton) findViewById(R.id.button2);
+        holidayRadioButton.setEnabled(false);
+
+        makeFragment();
+    }
+    // 특별 시간표 버튼을 눌렀을 때
+    private void setSpecialMode() {
+        shuttleMode = 3;
+        ImageView imageview = (ImageView)findViewById(R.id.title_image);
+        imageview.setImageResource(R.drawable.ic_title3);
 
         // 평일 버튼이 자동으로 눌리도록
         radioGroup.check(R.id.button1);
@@ -317,7 +339,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         fragment = new SlidingTabsFragment();
         Bundle bundle = new Bundle(2); // 파라미터는 전달할 데이터 개수
-        bundle.putBoolean("shuttleMode", shuttleMode);
+        bundle.putInt("shuttleMode", shuttleMode);
         bundle.putInt("whatDay", whatDay); // key , value
         fragment.setArguments(bundle);
         transaction.replace(R.id.content_fragment, fragment);
@@ -344,7 +366,15 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             // 프래그먼트 새로고침
                             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                            transaction.detach(fragment).attach(fragment).commit();
+                            /*transaction.detach(fragment).attach(fragment).commit();*/
+                            /**
+                             * java.lang.IllegalStateException 에러가 생겨서 수정
+                             * 참고자료 : http://www.kmshack.kr/tag/java-lang-illegalstateexception/
+                             * 액티비티 전환시 액티비티의 데이터를 저장하기 위해 onSaveInstanceState()를 실행하는데
+                             * FragmentTransaction의 commit()은 onSaveInstanceState() 이후에 실행되면 안 됨.
+                             * 때문에 commit()과 무관한 commitAllowingStateLoss()를 사용함.
+                             */
+                            transaction.detach(fragment).attach(fragment).commitAllowingStateLoss();
                         }
                     });
                     lastMinute = curMinute;
