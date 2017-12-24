@@ -36,7 +36,7 @@
     <Preference
         android:key="privacyPref_key"
         android:title="개인정보처리방침"
-        android:summary="눌러서 확인하기(링크)"
+        android:summary="눌러서 확인하기"
         android:icon="@drawable/ic_developer"
         />
 

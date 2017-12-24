@@ -10,6 +10,7 @@ import android.preference.PreferenceScreen;
 import android.text.util.Linkify;
 import android.widget.Toast;
 
+import oberis.hoseoro.Activity.InformationActivity;
 import oberis.hoseoro.Activity.MainActivity;
 
 // 실질적으로 설정창을 구현하는 곳
@@ -30,13 +31,16 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         termPref = (ListPreference) findPreference(getString(R.string.termPref_key));
         termPref.setOnPreferenceChangeListener(this);   // 리스너 연결
         privacyPref = (Preference) findPreference("privacyPref_key");
-        privacyPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {   // 하이퍼링크 리스터 연결
+        privacyPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 if (preference == privacyPref) {
+                    /*// 하이퍼링크 리스터 연결
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse("https://oberisblog.blogspot.kr/2017/12/blog-post.html"));
-                    startActivity(intent);
+                    startActivity(intent);*/
+                    // 개인정보처리방침 액티비티 연결
+                    startActivity(new Intent(getActivity(), InformationActivity.class));
                 }
                 return false;
             }
